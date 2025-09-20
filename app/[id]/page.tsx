@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { Card, CardContent } from "@/components/ui/card";
 import UpdateListTitleButton from "../components/UpdateListTitleButton";
+import DeleteListButton from "../components/DeleteListButton";
 
 export default async function ListPage({
   params,
@@ -10,7 +11,7 @@ export default async function ListPage({
     const { id } = await params;
 
     const list = await prisma.list.findUnique({where: {id: parseInt(id)}, include: { tasks: true }})
-    
+
     if (!list) {
       throw new Error("No list found");
     }
@@ -22,6 +23,7 @@ export default async function ListPage({
         </div>
         <div className="flex gap-4 my-auto">
           <UpdateListTitleButton listId={list.id}/>
+          <DeleteListButton listId={list.id}/>
         </div>
       </div>
         

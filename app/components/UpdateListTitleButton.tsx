@@ -34,7 +34,6 @@ export default function UpdateListTitle(props: UpdateListTitleButtonProps) {
             <PenLine size={20}/>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
-                <form onSubmit={updateListTitle}>
                     <DialogHeader>
                         <DialogTitle>Change List Name</DialogTitle>
                     </DialogHeader>
@@ -49,9 +48,8 @@ export default function UpdateListTitle(props: UpdateListTitleButtonProps) {
                         <DialogClose asChild>
                             <Button variant="outline">Cancel</Button>
                         </DialogClose>
-                        <Button type="submit">Save</Button>
+                        <Button onClick={updateListTitle}>Save</Button>
                     </DialogFooter>
-                </form>
             </DialogContent>
         </Dialog>
 }

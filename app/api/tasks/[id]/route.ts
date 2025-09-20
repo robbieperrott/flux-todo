@@ -14,3 +14,14 @@ export async function PUT(
 
     return new Response(JSON.stringify(updatedTask), { status: 201 });
 }
+
+
+export async function DELETE(request: NextRequest, context: { params: Promise<{ id: string; }>; }) {
+    const { id } = await context.params;
+
+    const updatedTask = await prisma.task.delete({
+        where: { id: parseInt(id) }
+    });
+
+    return new Response(JSON.stringify(updatedTask), { status: 201 });
+}

@@ -3,14 +3,18 @@ import prisma from "@/lib/prisma";
 import Link from "next/link";
 import NewListButton from "./components/NewListButton";
 import { Card, CardContent } from "@/components/ui/card";
+import { Task } from "./generated/prisma/client";
 
-export default async function Home() {
+export default async function ListsPage() {
   const user = await currentUser();
   if (!user) return <div className="flex justify-center">Sign in to manage your Todo lists</div>;
 
   const lists = await prisma.list.findMany({
     where: { user: { clerkId: user.id } },
+    include: {tasks: true}
   });
+
+  const fractionCompleteString = (tasks: Task[]) => tasks.length ? `${tasks.filter(task => task.complete).length}/${tasks.length}` : '-'
 
   return (
     <main>
@@ -18,10 +22,10 @@ export default async function Home() {
         {lists.map((list) => (
           <Link href={`/${list.id}`} key={list.id}>
             <Card className="p-3">
-              <CardContent>
-                <div className="">
+              <CardContent className="flex justify-between">
                   {list.title}
-                </div></CardContent>
+                  <div>{fractionCompleteString(list.tasks)}</div>
+                </CardContent>
             </Card>
           </Link>
         ))}

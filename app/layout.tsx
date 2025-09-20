@@ -11,6 +11,7 @@ import {
 } from "@clerk/nextjs";
 import { List } from "lucide-react"
 import Link from "next/link";
+import { currentUser } from "@clerk/nextjs/server";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,12 +48,14 @@ export default function RootLayout({
   );
 }
 
-const Navbar = () => {
+const Navbar = async () => {
+  const user = await currentUser();
+  const title = user ? `${user.firstName}'s Todos` : "Todos"
   return (
     <header className="flex justify-between items-center p-4 gap-4 h-16 border-b">
       <Link href="/"><List/></Link>
       <div className="text-3xl font-extrabold">
-        Todo
+        {title}
       </div>
       <div>
         <SignedOut>

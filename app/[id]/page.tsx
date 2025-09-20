@@ -6,11 +6,17 @@ export default async function ListPage({
 }: {
   params: { id: string }
 }) {
-    const id = parseInt(params.id);
+    const { id } = await params;
 
-    const list = await prisma.list.findUnique({where: {id}})
+    const list = await prisma.list.findUnique({where: {id: parseInt(id)}, include: { tasks: true }})
 
-    return <p>
+    return <div>
         {list?.title}
-    </p>
+        <ul>
+            {list?.tasks.map((task) => <li key={task.id}>
+                {task.description}
+            </li>)}
+        </ul>
+        
+    </div>
 }

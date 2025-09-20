@@ -2,27 +2,25 @@
 
 import { useState } from "react";
 
-export default function PostInputs() {
+export default function ListInputs() {
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
 
-  async function createPost(e: React.FormEvent) {
+  async function createList(e: React.FormEvent) {
     e.preventDefault();
-    if (!title || !content) return;
+    if (!title) return;
 
-    await fetch("/api/posts", {
+    await fetch("/api/lists", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, content }),
+      body: JSON.stringify({ title }),
     });
 
     setTitle("");
-    setContent("");
     location.reload();
   }
 
   return (
-    <form onSubmit={createPost} className="space-y-2">
+    <form onSubmit={createList} className="space-y-2">
       <input
         type="text"
         placeholder="Title"
@@ -30,14 +28,8 @@ export default function PostInputs() {
         onChange={(e) => setTitle(e.target.value)}
         className="w-full p-2 border border-zinc-800 rounded"
       />
-      <textarea
-        placeholder="Content"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        className="w-full p-2 border border-zinc-800 rounded"
-      />
       <button className="w-full p-2 border border-zinc-800 rounded">
-        Post
+        List
       </button>
     </form>
   );

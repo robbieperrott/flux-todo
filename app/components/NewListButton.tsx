@@ -19,7 +19,6 @@ export default function NewListButton() {
             body: JSON.stringify({ title }),
         });
 
-        setTitle("");
         location.reload();
     }
 

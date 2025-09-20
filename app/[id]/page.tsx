@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import { Card, CardContent } from "@/components/ui/card";
 import UpdateListTitleButton from "../components/UpdateListTitleButton";
 import DeleteListButton from "../components/DeleteListButton";
+import NewTaskButton from "../components/NewTaskButton";
 
 export default async function ListPage({
   params,
@@ -17,13 +18,14 @@ export default async function ListPage({
     }
 
     return <div>
-      <div className="flex justify-between">
-        <div className="text-xl mb-4">
+      <div className="flex justify-between mb-4">
+        <div className="text-xl font-semibold my-auto">
           {list.title}
         </div>
-        <div className="flex gap-4 my-auto">
+        <div className="flex gap-4 items-center">
           <UpdateListTitleButton listId={list.id}/>
           <DeleteListButton listId={list.id}/>
+          <NewTaskButton listId={list.id}/>
         </div>
       </div>
         

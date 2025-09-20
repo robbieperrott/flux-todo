@@ -30,7 +30,7 @@ export default async function ListPage({
       </div>
         
       <div className="flex flex-col gap-4">
-        {list.tasks.map((task) => <TaskCard key={task.id} description={task.description} />)}
+        {list.tasks.map((task) => <TaskCard key={task.id} complete={task.complete} description={task.description} />)}
       </div>
     </div>
 }

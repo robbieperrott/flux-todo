@@ -9,6 +9,8 @@ import {
   SignedOut,
   SignedIn,
 } from "@clerk/nextjs";
+import { List } from "lucide-react"
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,7 +38,9 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <Navbar />
-          {children}
+          <div className="max-w-2xl mx-auto p-8">
+            {children}
+          </div>
         </body>
       </html>
     </ClerkProvider>
@@ -45,14 +49,20 @@ export default function RootLayout({
 
 const Navbar = () => {
   return (
-    <header className="flex justify-end items-center p-4 gap-4 h-16">
-      <SignedOut>
+    <header className="flex justify-between items-center p-4 gap-4 h-16 border-b">
+      <Link href="/"><List/></Link>
+      <div className="text-3xl font-extrabold">
+        Todo
+      </div>
+      <div>
+        <SignedOut>
         <SignInButton />
         <SignUpButton />
       </SignedOut>
       <SignedIn>
         <UserButton />
       </SignedIn>
+      </div>
     </header>
   );
 };

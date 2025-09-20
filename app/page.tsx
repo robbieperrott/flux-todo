@@ -1,7 +1,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
-import ListInputs from "@/app/components/ListInputs";
 import Link from "next/link";
+import ListInputs from "./components/ListInputs";
 
 export default async function Home() {
   const user = await currentUser();
@@ -12,9 +12,8 @@ export default async function Home() {
   });
 
   return (
-    <main className="max-w-2xl mx-auto p-4">
-      <ListInputs />
-      <div className="mt-8">
+    <main>
+        <ListInputs/>
         {lists.map((list) => (
           <Link href={`/${list.id}`} key={list.id}>
             <div
@@ -23,7 +22,6 @@ export default async function Home() {
             </div>
           </Link>
         ))}
-      </div>
     </main>
   );
 }

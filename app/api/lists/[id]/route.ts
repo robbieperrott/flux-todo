@@ -1,10 +1,10 @@
 import prisma from "@/lib/prisma";
+import { NextRequest } from "next/server";
 
 export async function PUT(
-    request: Request,
-    { params }: { params: { id: string } }
-) {
-    const { id } = params;
+    request: NextRequest, context: { params: Promise<{ id: string; }>; })
+{
+    const { id } = await context.params;
     const { title } = await request.json();
 
     if (!title || typeof title !== 'string') {

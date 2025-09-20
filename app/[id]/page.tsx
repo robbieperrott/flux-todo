@@ -1,8 +1,8 @@
 import prisma from "@/lib/prisma";
-import { Card, CardContent } from "@/components/ui/card";
 import UpdateListTitleButton from "../components/UpdateListTitleButton";
 import DeleteListButton from "../components/DeleteListButton";
 import NewTaskButton from "../components/NewTaskButton";
+import TaskCard from "../components/TaskCard";
 
 export default async function ListPage({
   params,
@@ -33,16 +33,4 @@ export default async function ListPage({
         {list.tasks.map((task) => <TaskCard key={task.id} description={task.description} />)}
       </div>
     </div>
-}
-
-interface TaskCardProps {
-  description: string;
-}
-
-function TaskCard(props: TaskCardProps) {
-  const {description} = props;
-
-  return <Card className="p-3">
-    <CardContent>{description}</CardContent>
-  </Card>
 }

@@ -1,7 +1,8 @@
 import { currentUser } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
-import ListInputs from "./components/ListInputs";
+import NewListButton from "./components/NewListButton";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default async function Home() {
   const user = await currentUser();
@@ -13,15 +14,21 @@ export default async function Home() {
 
   return (
     <main>
-        <ListInputs/>
+      <div className="flex flex-col gap-4">
         {lists.map((list) => (
           <Link href={`/${list.id}`} key={list.id}>
-            <div
-              className="p-4 border border-zinc-800 rounded mt-4">
-              <h2 className="font-bold">{list.title}</h2>
-            </div>
+            <Card className="p-3">
+              <CardContent>
+                <div className="">
+                  {list.title}
+                </div></CardContent>
+            </Card>
           </Link>
         ))}
+      </div>
+      <div className="mt-8">
+        <NewListButton/>
+      </div>
     </main>
   );
 }

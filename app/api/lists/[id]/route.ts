@@ -19,11 +19,8 @@ export async function PUT(
     return new Response(JSON.stringify(updatedList), { status: 201 });
 }
 
-export async function DELETE(
-    request: Request,
-    { params }: { params: { id: string } }
-) {
-    const { id } = params;
+export async function DELETE(request: NextRequest, context: { params: Promise<{ id: string; }>; }) {
+    const { id } = await context.params;
 
     const updatedList = await prisma.list.delete({
         where: { id: parseInt(id) }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
+import { Plus } from "lucide-react";
 
 
 export default function NewListButton() {
@@ -25,7 +26,7 @@ export default function NewListButton() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-            <Button>New List</Button>
+                <Button><Plus/>New List</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <form onSubmit={createList}>

@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 
 interface NewTaskButtonProps {
@@ -28,7 +29,7 @@ export default function NewTaskButton(props: NewTaskButtonProps) {
 
     return <Dialog>
             <DialogTrigger asChild>
-            <Button>New Task</Button>
+            <Button><Plus/>New Task</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>

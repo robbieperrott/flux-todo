@@ -17,8 +17,6 @@ export default function DeleteListButton(props: DeleteListButtonProps) {
 
     const [open, setOpen] = useState(false);
 
-    const router = useRouter();
-
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         await deleteList(listId, "/");

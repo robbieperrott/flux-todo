@@ -1,6 +1,6 @@
 "use client"
 import { startTransition, useOptimistic } from "react";
-import { createTask, deleteTask, updateTask } from "../actions";
+import { createTask, deleteTask, updateList, updateTask } from "../actions";
 import { ListWithTasks } from "../types";
 import DeleteListButton from "./DeleteListButton";
 import NewTaskButton from "./NewTaskButton";
@@ -14,6 +14,13 @@ interface TasksProps {
 
 export default function Tasks(props: TasksProps) {
     const {list} = props;
+
+    const [optimisticListTitle, setOptimisticListTitle] = useOptimistic<string, string>(
+        list.title,
+        (currentTitle, newTitle) => {
+            return newTitle
+        }
+    )
     
     const [optimisticTasks, setOptimisticTasks] = useOptimistic(
         list.tasks,
@@ -59,18 +66,23 @@ export default function Tasks(props: TasksProps) {
         await updateTask(task, location.pathname)
     });
 
+    const handleUpdateListTitle = async (newTitle: string) => startTransition(async () => {
+        setOptimisticListTitle(newTitle);
+        await updateList({id: list.id, title: newTitle}, location.pathname)
+    });
+
     const sortedTasks = optimisticTasks.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
 
     return <>
         <div className="flex justify-between mb-4">
             <div className="text-xl font-semibold my-auto">
-                {list.title}
-                </div>
-                <div className="flex gap-4 items-center">
-                <UpdateListTitleButton listId={list.id}/>
+                {optimisticListTitle}
+            </div>
+            <div className="flex gap-4 items-center">
+                <UpdateListTitleButton initialTitle={list.title} onUpdate={handleUpdateListTitle}/>
                 <DeleteListButton listId={list.id}/>
                 <NewTaskButton onSubmit={handleCreateTask}/>
-                </div>
+            </div>
             </div>
             <div className="flex flex-col gap-4">
                 {sortedTasks.map((task) => <TaskCard

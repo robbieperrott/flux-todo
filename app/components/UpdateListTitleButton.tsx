@@ -5,26 +5,32 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { PenLine } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { updateList } from "../actions";
 
 interface UpdateListTitleButtonProps {
-    listId: number;
+    initialTitle: string;
+    onUpdate: (newTitle: string) => Promise<void>;
 }
 
 export default function UpdateListTitle(props: UpdateListTitleButtonProps) {
-    const {listId} = props;
-  const [title, setTitle] = useState("");
-  const [open, setOpen] = useState(false);
+    const {initialTitle, onUpdate} = props;
+    const [title, setTitle] = useState(initialTitle);
+    const [open, setOpen] = useState(false);
 
-  async function updateListTitle(e: React.FormEvent) {
-        e.preventDefault();
-        await updateList({id: listId, title}, location.pathname);
-        setOpen(false);
-        setTitle("");
-  }
+    async function updateListTitle(e: React.FormEvent) {
+            e.preventDefault();
+            setOpen(false);
+            setTitle(initialTitle);
+            onUpdate(title)
+    }
 
-  return <Dialog open={open} onOpenChange={setOpen}>
+    useEffect(() => {
+        // Revert to initial title when dialog is opened or closed
+        setTitle(initialTitle);
+    }, [open])
+
+    return <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
             <PenLine size={20}/>
             </DialogTrigger>

@@ -40,6 +40,7 @@ type PartialListWithoutId = Partial<Omit<List, 'id'>>;
 type ListUpdate = PartialListWithoutId & Pick<List, 'id'>;
 
 export async function updateList(list: ListUpdate, pathname: string) {
+    console.log(list)
     await prisma.list.update({
         where: {id: list.id},
         data: {

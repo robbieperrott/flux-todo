@@ -4,49 +4,34 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { X } from "lucide-react";
 import EditTaskDescription from "./EditTaskDescription";
-import { deleteTask, updateTask } from "../actions";
-import { useOptimistic, useTransition } from "react";
 import { Task } from "../generated/prisma/browser";
 
 interface TaskCardProps {
   task: Task;
-  onDelete: () => Promise<void>
+  onDelete: (task: Task) => Promise<void>
+  onUpdate: (task: Task) => Promise<void>;
 }
 
 export default function TaskCard(props: TaskCardProps) {
-    const {task, onDelete} = props;
+    const {task, onDelete, onUpdate} = props;
 
-    const [isPending, startTransition] = useTransition();
-
-    const [optimisticTask, updateOptimisticTask] = useOptimistic<
-        Task,
-        Partial<Task>
-    >(
-        task,
-        (currentTask, optimisticTask) => {
-            return {...currentTask, ...optimisticTask}
-        }
-    );
-
-    const updateTaskComplete = (e: React.FormEvent) => startTransition(async () => {
+    const updateTaskComplete = (e: React.FormEvent) => {
         e.preventDefault();
-        updateOptimisticTask({complete: !task.complete})
-        await updateTask({id: task.id, complete: !task.complete}, location.pathname);
-    })
+        onUpdate({...task, complete: !task.complete})
+    }
 
     async function handleDelete(e: React.FormEvent) {
         e.stopPropagation();
-        onDelete();
+        onDelete(task);
     }
 
     return <Card className="py-4 px-6" onClick={updateTaskComplete}>
         <CardContent className="flex px-0 justify-between items-center">
             <div className="flex items-center gap-4 overflow-hidden">
                 <Checkbox
-                    disabled={isPending}    // Don't allow further changes while transition is happening
-                    checked={optimisticTask.complete}
+                    checked={task.complete}
                 />
-                {optimisticTask.description}
+                {task.description}
             </div>
             <div className="flex items-center gap-4 pl-4">
                 {!task.complete && <EditTaskDescription taskId={task.id}/>}

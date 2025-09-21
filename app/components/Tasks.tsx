@@ -1,6 +1,6 @@
 "use client"
 import { useOptimistic, useTransition } from "react";
-import { createTask, deleteTask } from "../actions";
+import { createTask, deleteTask, updateTask } from "../actions";
 import { ListWithTasks } from "../types";
 import DeleteListButton from "./DeleteListButton";
 import NewTaskButton from "./NewTaskButton";
@@ -53,6 +53,14 @@ export default function Tasks(props: TasksProps) {
         await deleteTask(task.id, location.pathname)
     });
 
+    const handleUpdate = async (task: Task) => startTransition(async () => {
+        setOptimisticTasks({
+            action: "update",
+            task
+        });
+        await updateTask(task, location.pathname)
+    });
+
     const sortedTasks = optimisticTasks.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
 
     return <><div className="flex justify-between mb-4">
@@ -64,7 +72,14 @@ export default function Tasks(props: TasksProps) {
           <DeleteListButton listId={list.id}/>
           <NewTaskButton isPending={isPending} onSubmit={handleSubmitNewTask}/>
         </div>
-      </div><div className="flex flex-col gap-4">
-        {sortedTasks.map((task) => <TaskCard key={task.id} task={task} onDelete={() => handleDelete(task)}/>)}
-      </div></>
+      </div>
+      <div className="flex flex-col gap-4">
+        {sortedTasks.map((task) => <TaskCard
+            key={task.id}
+            task={task}
+            onDelete={handleDelete}
+            onUpdate={handleUpdate}
+        />)}
+      </div>
+    </>
 }

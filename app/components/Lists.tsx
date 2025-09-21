@@ -23,6 +23,7 @@ export default function Lists(props: ListsProps) {
     const [newListTitle, setNewListTitle] = useState("");
     const [dialogOpen, setDialogOpen] = useState(false);
     const [isPending, startTransition] = useTransition();
+    const [searchTerm, setSearchTerm] = useState("");
 
     const [optimisticLists, addOptimisticList] = useOptimistic<
         ListWithTasks[],
@@ -38,6 +39,8 @@ export default function Lists(props: ListsProps) {
         }]
     )
 
+    const filteredLists = optimisticLists.filter(list => list.title.includes(searchTerm))
+
      const handleSubmit = (e: React.FormEvent) => startTransition(async () => {
         setNewListTitle("");
         setDialogOpen(false);
@@ -50,7 +53,14 @@ export default function Lists(props: ListsProps) {
 
     return <>
         <div className="flex flex-col gap-4">
-            {optimisticLists.map((list) => (
+            <Input
+                className="my-4"
+                type="text"
+                placeholder="Search for lists"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            {filteredLists.map((list) => (
             <Link href={`/${list.id}`} key={list.id}>
                 <Card className="p-3">
                 <CardContent className="flex justify-between">

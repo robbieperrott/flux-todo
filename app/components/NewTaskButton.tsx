@@ -5,6 +5,7 @@ import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogT
 import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 import { useState } from "react";
+import { createTask } from "../actions";
 
 interface NewTaskButtonProps {
     listId: number;
@@ -12,23 +13,17 @@ interface NewTaskButtonProps {
 
 export default function NewTaskButton(props: NewTaskButtonProps) {
     const {listId} = props;
-    const [description, setDescription] = useState("")
+    const [description, setDescription] = useState("");
+    const [openDialog, setOpenDialog] = useState(false);
 
-    const createTask = async (e: React.FormEvent) => {
-         e.preventDefault();
-        if (!description) return;
-
-        await fetch("/api/tasks", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ listId, description }),
-        });
-
-        location.reload();
+    async function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        await createTask(description, listId, location.pathname);
+        setOpenDialog(false);  
     }
 
-    return <Dialog>
-            <DialogTrigger asChild>
+    return <Dialog open={openDialog}>
+            <DialogTrigger onClick={() => setOpenDialog(true)} asChild>
             <Button><Plus/>New Task</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
@@ -46,7 +41,7 @@ export default function NewTaskButton(props: NewTaskButtonProps) {
                         <DialogClose asChild>
                             <Button variant="outline">Cancel</Button>
                         </DialogClose>
-                        <Button onClick={createTask}>Create</Button>
+                        <Button onClick={handleSubmit}>Create</Button>
                     </DialogFooter>
             </DialogContent>
         </Dialog>

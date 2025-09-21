@@ -18,8 +18,6 @@ interface ListsProps {
 export default function Lists(props: ListsProps) {
     const {lists, userId} = props;
 
-    const [newListTitle, setNewListTitle] = useState("");
-    const [dialogOpen, setDialogOpen] = useState(false);
     const [isPending, startTransition] = useTransition();
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -43,10 +41,7 @@ export default function Lists(props: ListsProps) {
 
     const filteredLists = optimisticLists.filter(listFilter)
 
-     const handleSubmitNewList = async (e: React.FormEvent) => startTransition(async () => {
-        setNewListTitle("");
-        setDialogOpen(false);
-        e.preventDefault();
+     const handleSubmitNewList = async (newListTitle: string) => startTransition(async () => {
         addOptimisticList(newListTitle);
         await createList(newListTitle, location.pathname);
     });
@@ -64,11 +59,7 @@ export default function Lists(props: ListsProps) {
                 />
                 <NewListButton
                     isPending={isPending}
-                    newListTitle={newListTitle}
-                    onNewListTitleChange={setNewListTitle}
                     onSubmit={handleSubmitNewList}
-                    open={dialogOpen}
-                    onOpenChange={setDialogOpen}
                 />
             </div>
             <div className="flex flex-col gap-4">

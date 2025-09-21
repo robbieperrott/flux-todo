@@ -2,25 +2,32 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
+import { useState } from "react";
 
 interface NewListButtonProps {
     isPending: boolean;
-    newListTitle: string;
-    onNewListTitleChange: (title: string) => void;
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    onSubmit: (e: React.FormEvent) => Promise<void>;
+    onSubmit: (newListTitle: string) => Promise<void>;
 }
 
 export default function NewListButton(props: NewListButtonProps) {
-    const {isPending, newListTitle, onNewListTitleChange, open, onOpenChange, onSubmit} = props;
+    const {isPending, onSubmit} = props;
 
-    return <Dialog open={open} onOpenChange={onOpenChange}>
+    const [newListTitle, setNewListTitle] = useState("");
+    const [open, setOpen] = useState(false);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        setNewListTitle("");
+        setOpen(false);
+        e.preventDefault();
+        await onSubmit(newListTitle);
+    }
+
+    return <Dialog open={open} onOpenChange={setOpen}>
                     <DialogTrigger asChild>
                         <Button><Plus/>New List</Button>
                     </DialogTrigger>
                     <DialogContent showCloseButton={false}>
-                        <form onSubmit={onSubmit}>
+                        <form onSubmit={handleSubmit}>
                             <DialogHeader>
                                 <DialogTitle>New List</DialogTitle>
                             </DialogHeader>
@@ -29,7 +36,7 @@ export default function NewListButton(props: NewListButtonProps) {
                                     type="text"
                                     placeholder="Enter a new list name..."
                                     value={newListTitle}
-                                    onChange={(e) => onNewListTitleChange(e.target.value)}
+                                    onChange={(e) => setNewListTitle(e.target.value)}
                             />
                             <DialogFooter>
                                 <DialogClose asChild>

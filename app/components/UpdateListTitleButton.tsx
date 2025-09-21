@@ -6,6 +6,7 @@ import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogT
 import { Input } from "@/components/ui/input";
 import { PenLine } from "lucide-react";
 import { useState } from "react";
+import { updateList } from "../actions";
 
 interface UpdateListTitleButtonProps {
     listId: number;
@@ -14,23 +15,16 @@ interface UpdateListTitleButtonProps {
 export default function UpdateListTitle(props: UpdateListTitleButtonProps) {
     const {listId} = props;
   const [title, setTitle] = useState("");
+  const [open, setOpen] = useState(false);
 
   async function updateListTitle(e: React.FormEvent) {
         e.preventDefault();
-        if (!title) return;
+        await updateList({id: listId, title}, location.pathname)
+        setOpen(false);
+  }
 
-        await fetch(`/api/lists/${listId}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ title }),
-        });
-
-        setTitle("");
-        location.reload();
-    }
-
-  return <Dialog>
-            <DialogTrigger asChild>
+  return <Dialog open={open}>
+            <DialogTrigger onClick={() => setOpen(true)} asChild>
             <PenLine size={20}/>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">

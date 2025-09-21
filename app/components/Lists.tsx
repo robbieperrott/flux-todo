@@ -39,7 +39,11 @@ export default function Lists(props: ListsProps) {
         }]
     )
 
-    const filteredLists = optimisticLists.filter(list => list.title.includes(searchTerm))
+    const listFilter = (list: ListWithTasks) => {
+        return list.title.includes(searchTerm) || list.tasks.find(task => task.description.includes(searchTerm))
+    }
+
+    const filteredLists = optimisticLists.filter(listFilter)
 
      const handleSubmit = (e: React.FormEvent) => startTransition(async () => {
         setNewListTitle("");
@@ -56,7 +60,7 @@ export default function Lists(props: ListsProps) {
             <Input
                 className="my-4"
                 type="text"
-                placeholder="Search for lists"
+                placeholder="Search for lists or tasks"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />

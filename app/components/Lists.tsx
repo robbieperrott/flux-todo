@@ -40,7 +40,7 @@ export default function Lists(props: ListsProps) {
     )
 
     const listFilter = (list: ListWithTasks) => {
-        return list.title.includes(searchTerm) || list.tasks.find(task => task.description.includes(searchTerm))
+        return list.title.toLowerCase().includes(searchTerm.toLowerCase()) || list.tasks.find(task => task.description.toLowerCase().includes(searchTerm.toLowerCase()))
     }
 
     const filteredLists = optimisticLists.filter(listFilter)

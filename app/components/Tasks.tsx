@@ -1,6 +1,6 @@
 "use client"
 import { useOptimistic, useTransition } from "react";
-import { createTask } from "../actions";
+import { createTask, deleteTask } from "../actions";
 import { ListWithTasks } from "../types";
 import DeleteListButton from "./DeleteListButton";
 import NewTaskButton from "./NewTaskButton";
@@ -17,23 +17,40 @@ export default function Tasks(props: TasksProps) {
     
     const [isPending, startTransition] = useTransition();
     
-    const [optimisticTasks, addOptimisticTask] = useOptimistic<
-        Task[],
-        string
-    >(
+    const [optimisticTasks, setOptimisticTasks] = useOptimistic(
         list.tasks,
-        (currentTasks, newTaskDescription) => [...currentTasks, {
-            id: Date.now(), // Temporary optimistic ID,
-            description: newTaskDescription,
-            createdAt: new Date(),
-            listId: list.id,
-            complete: false,
-        }]
-    )
+        (state, { action, task }: { action: string; task: Task }) => {
+            switch (action) {
+            case "delete":
+                return state.filter(({ id }) => id !== task.id);
+            case "update":
+                return state.map((t) => (t.id === task.id ? task : t));
+            default:
+                return [...state, task];
+            }
+        },
+    );
 
     const handleSubmitNewTask = async (description: string) => startTransition(async () => {
-        addOptimisticTask(description);
+        setOptimisticTasks({
+            action: "create",
+            task: {
+                id: Date.now(), // Temporary optimistic ID,
+                description,
+                createdAt: new Date(),
+                listId: list.id,
+                complete: false,
+            }
+        });
         await createTask(description, list.id, location.pathname);
+    });
+
+    const handleDelete = async (task: Task) => startTransition(async () => {
+        setOptimisticTasks({
+            action: "delete",
+            task
+        });
+        await deleteTask(task.id, location.pathname)
     });
 
     const sortedTasks = optimisticTasks.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
@@ -48,6 +65,6 @@ export default function Tasks(props: TasksProps) {
           <NewTaskButton isPending={isPending} onSubmit={handleSubmitNewTask}/>
         </div>
       </div><div className="flex flex-col gap-4">
-        {sortedTasks.map((task) => <TaskCard key={task.id} task={task}/>)}
+        {sortedTasks.map((task) => <TaskCard key={task.id} task={task} onDelete={() => handleDelete(task)}/>)}
       </div></>
 }

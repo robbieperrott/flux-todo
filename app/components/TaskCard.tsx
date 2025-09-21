@@ -9,11 +9,12 @@ import { useOptimistic, useTransition } from "react";
 import { Task } from "../generated/prisma/browser";
 
 interface TaskCardProps {
-  task: Task
+  task: Task;
+  onDelete: () => Promise<void>
 }
 
 export default function TaskCard(props: TaskCardProps) {
-    const {task} = props;
+    const {task, onDelete} = props;
 
     const [isPending, startTransition] = useTransition();
 
@@ -35,7 +36,7 @@ export default function TaskCard(props: TaskCardProps) {
 
     async function handleDelete(e: React.FormEvent) {
         e.stopPropagation();
-        await deleteTask(task.id, location.pathname)
+        onDelete();
     }
 
     return <Card className="py-4 px-6" onClick={updateTaskComplete}>

@@ -5,6 +5,7 @@ import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogT
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { Trash } from "lucide-react";
  import { useRouter } from 'next/navigation';
+import { deleteList } from "../actions";
 
 interface DeleteListButtonProps {
     listId: number;
@@ -15,14 +16,10 @@ export default function DeleteListButton(props: DeleteListButtonProps) {
 
     const router = useRouter();
 
-    async function deleteList(e: React.FormEvent) {
+    async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-
-        await fetch(`/api/lists/${listId}`, {
-            method: "DELETE",
-        });
-
-        router.replace("/");
+        await deleteList(listId, "/");
+        setOpenDialog(false);  
     }
 
     return <Dialog>
@@ -38,8 +35,12 @@ export default function DeleteListButton(props: DeleteListButtonProps) {
                         <DialogClose asChild>
                             <Button variant="outline">Cancel</Button>
                         </DialogClose>
-                        <Button variant="destructive" onClick={deleteList}>Delete</Button>
+                        <Button variant="destructive" onClick={handleSubmit}>Delete</Button>
                     </DialogFooter>
             </DialogContent>
         </Dialog>
+}
+
+function setOpenDialog(arg0: boolean) {
+    throw new Error("Function not implemented.");
 }

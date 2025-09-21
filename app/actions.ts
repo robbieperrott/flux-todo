@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma';
 import { auth } from '@clerk/nextjs/server';
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 
 export async function createList(title: string, pathname: string) {
@@ -31,6 +32,13 @@ export async function createTask(description: string, listId: number, pathname: 
         listId,
         },
     });
-
     revalidatePath(pathname);
+}
+
+export async function deleteList(listId: number, redirectPathname: string) {
+    await prisma.list.delete({
+        where: { id: listId }
+    });
+
+    redirect(redirectPathname);
 }

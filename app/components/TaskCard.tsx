@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { X } from "lucide-react";
 import EditTaskDescription from "./EditTaskDescription";
+import { updateTask } from "../actions";
 
 interface TaskCardProps {
   task: {complete: boolean;
@@ -14,16 +15,9 @@ interface TaskCardProps {
 export default function TaskCard(props: TaskCardProps) {
     const {task} = props;
 
-    async function updateTask(e: React.FormEvent) {
+    async function updateTaskComplete(e: React.FormEvent) {
         e.preventDefault();
- 
-        await fetch(`/api/tasks/${task.id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ complete: !task.complete }),
-        });
-
-        location.reload();
+        await updateTask({id: task.id, complete: !task.complete}, location.pathname);
     }
 
     async function deleteTask(e: React.FormEvent) {
@@ -39,7 +33,7 @@ export default function TaskCard(props: TaskCardProps) {
     return <Card className="p-3">
         <CardContent className="flex px-2 justify-between items-center">
             <div className="flex items-center gap-4">
-                <Checkbox onClick={updateTask} checked={task.complete}/>
+                <Checkbox onClick={updateTaskComplete} checked={task.complete}/>
                 {task.description}
             </div>
             <div className="flex items-center gap-4">

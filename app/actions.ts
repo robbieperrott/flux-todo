@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 import { auth } from '@clerk/nextjs/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { Task } from './generated/prisma/client';
 
 
 export async function createList(title: string, pathname: string) {
@@ -30,6 +31,19 @@ export async function createTask(description: string, listId: number, pathname: 
         data: {
         description,
         listId,
+        },
+    });
+    revalidatePath(pathname);
+}
+
+type PartialTaskWithoutId = Partial<Omit<Task, 'id'>>;
+type TaskUpdate = PartialTaskWithoutId & Pick<Task, 'id'>;
+
+export async function updateTask(task: TaskUpdate, pathname: string) {
+    await prisma.task.update({
+        where: {id: task.id},
+        data: {
+            ...task
         },
     });
     revalidatePath(pathname);

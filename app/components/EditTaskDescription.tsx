@@ -3,6 +3,7 @@ import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogT
 import { Input } from "@/components/ui/input";
 import { PenLine } from "lucide-react";
 import { useState } from "react";
+import { updateTask } from "../actions";
 
 interface EditTaskDescriptionProps {
     taskId: number;
@@ -10,43 +11,36 @@ interface EditTaskDescriptionProps {
 
 export default function EditTaskDescription(props: EditTaskDescriptionProps) {
     const {taskId} = props;
-  const [description, setDescription] = useState("");
+    const [description, setDescription] = useState("");
+    const [open, setOpen] = useState(false);
 
-  async function updateTaskName(e: React.FormEvent) {
+    async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        if (!description) return;
-
-        await fetch(`/api/tasks/${taskId}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ description }),
-        });
-
-        setDescription("");
-        location.reload();
+        await updateTask({id: taskId, description}, location.pathname);
+        setOpen(false);
     }
 
-  return <Dialog>
-            <DialogTrigger asChild>
-            <PenLine size={20}/>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                        <DialogTitle>Change Task Name</DialogTitle>
-                    </DialogHeader>
-                    <Input
-                        className="my-4"
-                        type="text"
-                        placeholder="Enter a new task name..."
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
-                    <DialogFooter>
-                        <DialogClose asChild>
-                            <Button variant="outline">Cancel</Button>
-                        </DialogClose>
-                        <Button onClick={updateTaskName}>Save</Button>
-                    </DialogFooter>
-            </DialogContent>
-        </Dialog>
+    return <Dialog open={open}>
+                <DialogTrigger onClick={() => setOpen(true)} asChild>
+                <PenLine size={20}/>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                            <DialogTitle>Change Task Name</DialogTitle>
+                        </DialogHeader>
+                        <Input
+                            className="my-4"
+                            type="text"
+                            placeholder="Enter a new task name..."
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                        />
+                        <DialogFooter>
+                            <DialogClose asChild>
+                                <Button variant="outline">Cancel</Button>
+                            </DialogClose>
+                            <Button onClick={handleSubmit}>Save</Button>
+                        </DialogFooter>
+                </DialogContent>
+            </Dialog>
 }

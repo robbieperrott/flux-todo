@@ -8,19 +8,21 @@ import { useState } from "react";
 import { createTask } from "../actions";
 
 interface NewTaskButtonProps {
-    listId: number;
+    isPending: boolean;
+    onSubmit: (description: string) => Promise<void>;
 }
 
 export default function NewTaskButton(props: NewTaskButtonProps) {
-    const {listId} = props;
+    const {isPending, onSubmit} = props;
+
     const [description, setDescription] = useState("");
     const [open, setOpen] = useState(false);
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        await createTask(description, listId, location.pathname);
         setOpen(false); 
-        setDescription(""); 
+        setDescription("");
+        await onSubmit(description); 
     }
 
     return <Dialog open={open} onOpenChange={setOpen}>

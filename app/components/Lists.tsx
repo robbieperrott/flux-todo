@@ -1,14 +1,13 @@
 "use client"
 
 import { useOptimistic, useState, useTransition } from "react";
-import { List, Task } from "../generated/prisma/browser";
+import { Task } from "../generated/prisma/browser";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { createList } from "../actions";
 import { Input } from "@/components/ui/input";
 import NewListButton from "./NewListButton";
-
-type ListWithTasks = List & {tasks: Task[]}
+import { ListWithTasks } from "../types";
 
 interface ListsProps {
     lists: ListWithTasks[];

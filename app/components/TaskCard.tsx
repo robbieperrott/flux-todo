@@ -2,13 +2,13 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { X } from "lucide-react";
 import EditTaskDescription from "./EditTaskDescription";
 import { Task } from "../generated/prisma/browser";
+import DeleteTaskButton from "./DeleteTaskButton";
 
 interface TaskCardProps {
   task: Task;
-  onDelete: (task: Task) => Promise<void>
+  onDelete: () => Promise<void>
   onUpdate: (task: Task) => Promise<void>;
 }
 
@@ -18,11 +18,6 @@ export default function TaskCard(props: TaskCardProps) {
     const updateTaskComplete = (e: React.FormEvent) => {
         e.preventDefault();
         onUpdate({...task, complete: !task.complete})
-    }
-
-    async function handleDelete(e: React.FormEvent) {
-        e.stopPropagation();
-        onDelete(task);
     }
 
     const handleUpdateDescription = (description: string) => onUpdate({...task, description})
@@ -35,9 +30,9 @@ export default function TaskCard(props: TaskCardProps) {
                 />
                 {task.description}
             </div>
-            <div className="flex items-center gap-4 pl-4">
+            <div className="flex items-center gap-2 pl-4">
                 {!task.complete && <EditTaskDescription initialDescription={task.description} onUpdate={handleUpdateDescription}/>}
-                <X size={18} onClick={handleDelete}/>
+                <DeleteTaskButton onDelete={onDelete}/>
             </div>
         </CardContent>
     </Card>

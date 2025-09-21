@@ -27,7 +27,9 @@ export default function EditTaskDescription(props: EditTaskDescriptionProps) {
 
     return <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild onClick={(e) => e.stopPropagation()}>
-                    <PenLine size={16}/>
+                    <Button variant="ghost" size="icon">
+                        <PenLine size={16}/>
+                    </Button>
                 </DialogTrigger>
                 <DialogContent showCloseButton={false}>
                         <DialogHeader>

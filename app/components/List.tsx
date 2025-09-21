@@ -78,7 +78,7 @@ export default function Tasks(props: TasksProps) {
             <div className="text-xl font-semibold my-auto">
                 {optimisticListTitle}
             </div>
-            <div className="flex gap-4 items-center">
+            <div className="flex gap-2 items-center">
                 <UpdateListTitleButton initialTitle={list.title} onUpdate={handleUpdateListTitle}/>
                 <DeleteListButton listId={list.id}/>
                 <NewTaskButton onSubmit={handleCreateTask}/>
@@ -88,7 +88,7 @@ export default function Tasks(props: TasksProps) {
                 {sortedTasks.map((task) => <TaskCard
                     key={task.id}
                     task={task}
-                    onDelete={handleDeleteTask}
+                    onDelete={() => handleDeleteTask(task)}
                     onUpdate={handleUpdateTask}
                 />)}
         </div>

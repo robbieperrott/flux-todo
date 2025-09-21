@@ -17,6 +17,8 @@ export default async function ListPage({
       throw new Error("No list found");
     }
 
+    const sortedTasks = list.tasks.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+
     return <div>
       <div className="flex justify-between mb-4">
         <div className="text-xl font-semibold my-auto">
@@ -30,7 +32,7 @@ export default async function ListPage({
       </div>
         
       <div className="flex flex-col gap-4">
-        {list.tasks.map((task) => <TaskCard key={task.id} task={task}/>)}
+        {sortedTasks.map((task) => <TaskCard key={task.id} task={task}/>)}
       </div>
     </div>
 }

@@ -18,6 +18,7 @@ model User {
 
 model List {
   id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
   title     String
   tasks     Task[]
   userId    Int
@@ -27,6 +28,7 @@ model List {
 model Task {
   id          Int      @id @default(autoincrement())
   complete    Boolean  @default(false)
+  createdAt   DateTime @default(now())
   description String
   listId      Int
   list        List     @relation(fields: [listId], references: [id], onDelete: Cascade)

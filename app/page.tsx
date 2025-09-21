@@ -11,7 +11,8 @@ export default async function ListsPage() {
 
   const lists = await prisma.list.findMany({
     where: { user: { clerkId: user.id } },
-    include: {tasks: true}
+    include: {tasks: true},
+    orderBy: [{createdAt: "asc"}]
   });
 
   const fractionCompleteString = (tasks: Task[]) => tasks.length ? `${tasks.filter(task => task.complete).length}/${tasks.length}` : '-'

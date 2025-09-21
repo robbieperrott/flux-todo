@@ -11,15 +11,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { ArrowUpDown } from "lucide-react"
-import { ListSortBy } from "../types"
+import { ListSortBy, SortDirection } from "../types"
 
 interface SortMenuProps {
     sortBy: ListSortBy;
-    onChange: (sortBy: ListSortBy) => void;
+    onChangeSortBy: (sortBy: ListSortBy) => void;
+    direction: SortDirection;
+    onChangeDirection: (direction: SortDirection) => void;
 }
 
 export default function SortMenu(props: SortMenuProps) {
-  const {sortBy, onChange} = props;
+  const {direction, sortBy, onChangeSortBy, onChangeDirection} = props;
 
   return (
     <DropdownMenu>
@@ -28,18 +30,31 @@ export default function SortMenu(props: SortMenuProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Sort By</DropdownMenuLabel>
-        <DropdownMenuSeparator />
         <DropdownMenuCheckboxItem
           checked={sortBy === 'createdAt'}
-          onSelect={(e) => onChange("createdAt")}
+          onClick={(e) => {e.preventDefault(); onChangeSortBy("createdAt")}}
         >
           Created At
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem
           checked={sortBy === "title"}
-          onSelect={(e) => onChange("title")}
+          onClick={(e) => {e.preventDefault(); onChangeSortBy("title")}}
         >
           Title
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuLabel>Direction</DropdownMenuLabel>
+        <DropdownMenuCheckboxItem
+          checked={direction === "asc"}
+          onClick={(e) => {e.preventDefault(); onChangeDirection("asc")}}
+        >
+          Ascending
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem
+          checked={direction === "desc"}
+          onClick={(e) => {e.preventDefault(); onChangeDirection("desc")}}
+        >
+          Descending
         </DropdownMenuCheckboxItem>
       </DropdownMenuContent>
     </DropdownMenu>

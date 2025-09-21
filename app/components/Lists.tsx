@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { createList } from "../actions";
 import { Input } from "@/components/ui/input";
 import NewListButton from "./NewListButton";
-import { ListSortBy, ListWithTasks } from "../types";
+import { ListSortBy, ListWithTasks, SortDirection } from "../types";
 import SortMenu from "./SortMenu";
 
 interface ListsProps {
@@ -21,6 +21,7 @@ export default function Lists(props: ListsProps) {
     const [isPending, startTransition] = useTransition();
     const [searchTerm, setSearchTerm] = useState("");
     const [sortBy, setSortBy] = useState<ListSortBy>("createdAt");
+    const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 
     const [optimisticLists, addOptimisticList] = useOptimistic<
         ListWithTasks[],
@@ -51,9 +52,15 @@ export default function Lists(props: ListsProps) {
 
     const sortFunction = () => {
         if (sortBy === "createdAt") {
-            return (a: List, b: List) => a.createdAt.getTime() - b.createdAt.getTime();
+            return (a: List, b: List) => {
+                const [c,d] = sortDirection === "asc" ? [a,b] : [b,a];
+                return c.createdAt.getTime() - d.createdAt.getTime()
+            };
         } else if (sortBy === "title") {
-            return (a: List, b: List) => a.title < b.title ? -1 : 1;
+            return (a: List, b: List) => {
+                const [c,d] = sortDirection === "asc" ? [a,b] : [b,a];
+                return c.title < d.title ? -1 : 1;
+            };
         }
     }
 
@@ -68,7 +75,12 @@ export default function Lists(props: ListsProps) {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <SortMenu sortBy={sortBy} onChange={setSortBy}/>
+                <SortMenu
+                    direction={sortDirection}
+                    onChangeDirection={setSortDirection}
+                    onChangeSortBy={setSortBy}
+                    sortBy={sortBy}
+                />
                 <NewListButton
                     isPending={isPending}
                     onSubmit={handleSubmitNewList}

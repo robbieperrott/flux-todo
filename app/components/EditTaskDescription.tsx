@@ -2,24 +2,28 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { PenLine } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface EditTaskDescriptionProps {
-    taskId: number;
+    initialDescription: string;
     onUpdate: (description: string) => Promise<void>;
 }
 
 export default function EditTaskDescription(props: EditTaskDescriptionProps) {
-    const {onUpdate} = props;
-    const [description, setDescription] = useState("");
+    const {initialDescription, onUpdate} = props;
+    const [description, setDescription] = useState(initialDescription);
     const [open, setOpen] = useState(false);
 
     async function handleSubmit(e: React.FormEvent) {
         e.stopPropagation();
         setOpen(false);
-        setDescription("");
         onUpdate(description);
     }
+
+    useEffect(() => {
+        // Revert to initial description when opening / closing modal
+        setDescription(initialDescription);
+    }, [open])
 
     return <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild onClick={(e) => e.stopPropagation()}>

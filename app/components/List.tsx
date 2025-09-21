@@ -1,19 +1,24 @@
 "use client"
-import { startTransition, useOptimistic } from "react";
+import { startTransition, useOptimistic, useState } from "react";
 import { createTask, deleteTask, updateList, updateTask } from "../actions";
-import { ListWithTasks } from "../types";
+import { ListWithTasks, SortDirection, TaskSortBy } from "../types";
 import DeleteListButton from "./DeleteListButton";
 import NewTaskButton from "./NewTaskButton";
 import TaskCard from "./TaskCard";
 import UpdateListTitleButton from "./UpdateListTitleButton";
 import { Task } from "../generated/prisma/browser";
+import TaskSortMenu from "./TaskSortMenu";
 
-interface TasksProps {
+interface ListProps {
     list: ListWithTasks;
 }
 
-export default function Tasks(props: TasksProps) {
+export default function List(props: ListProps) {
     const {list} = props;
+
+    const [sortBy, setSortBy] = useState<TaskSortBy>("createdAt");
+    const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
+
 
     const [optimisticListTitle, setOptimisticListTitle] = useOptimistic<string, string>(
         list.title,
@@ -71,7 +76,21 @@ export default function Tasks(props: TasksProps) {
         await updateList({id: list.id, title: newTitle}, location.pathname)
     });
 
-    const sortedTasks = optimisticTasks.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+    const sortFunction = () => {
+        if (sortBy === "createdAt") {
+            return (a: Task, b: Task) => {
+                const [c,d] = sortDirection === "asc" ? [a,b] : [b,a];
+                return c.createdAt.getTime() - d.createdAt.getTime()
+            };
+        } else if (sortBy === "description") {
+            return (a: Task, b: Task) => {
+                const [c,d] = sortDirection === "asc" ? [a,b] : [b,a];
+                return c.description < d.description ? -1 : 1;
+            };
+        }
+    }
+
+    const sortedTasks = optimisticTasks.sort(sortFunction());
 
     return <>
         <div className="flex justify-between mb-4">
@@ -81,6 +100,7 @@ export default function Tasks(props: TasksProps) {
             <div className="flex gap-2 items-center">
                 <UpdateListTitleButton initialTitle={list.title} onUpdate={handleUpdateListTitle}/>
                 <DeleteListButton listId={list.id}/>
+                <TaskSortMenu sortBy={sortBy} onChangeSortBy={setSortBy} direction={sortDirection} onChangeDirection={setSortDirection} />
                 <NewTaskButton onSubmit={handleCreateTask}/>
             </div>
             </div>

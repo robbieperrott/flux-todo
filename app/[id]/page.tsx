@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import Tasks from "../components/Tasks";
+import List from "../components/List";
 
 export default async function ListPage({
   params,
@@ -14,5 +14,5 @@ export default async function ListPage({
       throw new Error("No list found");
     }
 
-    return <Tasks list={list}/>
+    return <List list={list}/>
 }

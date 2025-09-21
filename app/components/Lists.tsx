@@ -5,10 +5,8 @@ import { List, Task } from "../generated/prisma/browser";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { createList } from "../actions";
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus } from "lucide-react";
+import NewListButton from "./NewListButton";
 
 type ListWithTasks = List & {tasks: Task[]}
 
@@ -45,7 +43,7 @@ export default function Lists(props: ListsProps) {
 
     const filteredLists = optimisticLists.filter(listFilter)
 
-     const handleSubmit = (e: React.FormEvent) => startTransition(async () => {
+     const handleSubmitNewList = async (e: React.FormEvent) => startTransition(async () => {
         setNewListTitle("");
         setDialogOpen(false);
         e.preventDefault();
@@ -64,31 +62,14 @@ export default function Lists(props: ListsProps) {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-                    <DialogTrigger asChild>
-                        <Button><Plus/>New List</Button>
-                    </DialogTrigger>
-                    <DialogContent showCloseButton={false}>
-                        <form onSubmit={handleSubmit}>
-                            <DialogHeader>
-                                <DialogTitle>New List</DialogTitle>
-                            </DialogHeader>
-                            <Input
-                                    className="my-4"
-                                    type="text"
-                                    placeholder="Enter a new list name..."
-                                    value={newListTitle}
-                                    onChange={(e) => setNewListTitle(e.target.value)}
-                            />
-                            <DialogFooter>
-                                <DialogClose asChild>
-                                    <Button variant="outline">Cancel</Button>
-                                </DialogClose>
-                                <Button type="submit" disabled={isPending || newListTitle === ""}>Create</Button>
-                            </DialogFooter>
-                        </form>
-                    </DialogContent>
-                </Dialog>
+                <NewListButton
+                    isPending={isPending}
+                    newListTitle={newListTitle}
+                    onNewListTitleChange={setNewListTitle}
+                    onSubmit={handleSubmitNewList}
+                    open={dialogOpen}
+                    onOpenChange={setDialogOpen}
+                />
             </div>
             <div className="flex flex-col gap-4">
             {filteredLists.map((list) => (

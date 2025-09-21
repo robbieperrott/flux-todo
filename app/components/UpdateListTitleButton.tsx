@@ -21,6 +21,7 @@ export default function UpdateListTitle(props: UpdateListTitleButtonProps) {
         e.preventDefault();
         await updateList({id: listId, title}, location.pathname);
         setOpen(false);
+        setTitle("");
   }
 
   return <Dialog open={open} onOpenChange={setOpen}>

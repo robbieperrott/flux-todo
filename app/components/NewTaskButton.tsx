@@ -19,7 +19,8 @@ export default function NewTaskButton(props: NewTaskButtonProps) {
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         await createTask(description, listId, location.pathname);
-        setOpen(false);  
+        setOpen(false); 
+        setDescription(""); 
     }
 
     return <Dialog open={open} onOpenChange={setOpen}>
@@ -33,7 +34,7 @@ export default function NewTaskButton(props: NewTaskButtonProps) {
                     <Input
                         className="my-4"
                         type="text"
-                        placeholder="Enter a new task description..."
+                        placeholder="Describe your task here..."
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     />

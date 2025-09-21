@@ -16,6 +16,7 @@ export default function NewListButton() {
         e.preventDefault();
         await createList(title, location.pathname);
         setOpen(false);
+        setTitle("");
     }
 
     return (

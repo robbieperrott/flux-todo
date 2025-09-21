@@ -18,6 +18,7 @@ export default function EditTaskDescription(props: EditTaskDescriptionProps) {
         e.preventDefault();
         await updateTask({id: taskId, description}, location.pathname);
         setOpen(false);
+        setDescription("");
     }
 
     return <Dialog open={open} onOpenChange={setOpen}>
@@ -26,12 +27,12 @@ export default function EditTaskDescription(props: EditTaskDescriptionProps) {
                 </DialogTrigger>
                 <DialogContent showCloseButton={false}>
                         <DialogHeader>
-                            <DialogTitle>Changes Task Description</DialogTitle>
+                            <DialogTitle>Edit Task</DialogTitle>
                         </DialogHeader>
                         <Input
                             className="my-4"
                             type="text"
-                            placeholder="Enter a new task name..."
+                            placeholder="Describe your task here..."
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                         />

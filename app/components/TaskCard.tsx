@@ -48,7 +48,7 @@ export default function TaskCard(props: TaskCardProps) {
                 {optimisticTask.description}
             </div>
             <div className="flex items-center gap-4 pl-4">
-                <EditTaskDescription taskId={task.id}/>
+                {!task.complete && <EditTaskDescription taskId={task.id}/>}
                 <X size={20} onClick={handleDelete}/>
             </div>
         </CardContent>

@@ -10,20 +10,20 @@ import { createList } from "../actions";
 
 export default function NewListButton() {
     const [title, setTitle] = useState("");
-    const [openDialog, setOpenDialog] = useState(false);
+    const [open, setOpen] = useState(false);
     
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         await createList(title, location.pathname);
-        setOpenDialog(false);  
+        setOpen(false);
     }
 
     return (
-        <Dialog open={openDialog}>
-            <DialogTrigger onClick={() => setOpenDialog(true)} asChild>
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
                 <Button><Plus/>New List</Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent showCloseButton={false}>
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
                         <DialogTitle>New List</DialogTitle>
@@ -37,7 +37,7 @@ export default function NewListButton() {
                     />
                     <DialogFooter>
                         <DialogClose asChild>
-                            <Button onClick={() => setOpenDialog(false)} variant="outline">Cancel</Button>
+                            <Button variant="outline">Cancel</Button>
                         </DialogClose>
                         <Button type="submit" disabled={title === ""}>Create</Button>
                     </DialogFooter>

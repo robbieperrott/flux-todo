@@ -20,13 +20,13 @@ export default function EditTaskDescription(props: EditTaskDescriptionProps) {
         setOpen(false);
     }
 
-    return <Dialog open={open}>
-                <DialogTrigger onClick={() => setOpen(true)} asChild>
+    return <Dialog open={open} onOpenChange={setOpen}>
+                <DialogTrigger asChild>
                 <PenLine size={20}/>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent showCloseButton={false}>
                         <DialogHeader>
-                            <DialogTitle>Change Task Name</DialogTitle>
+                            <DialogTitle>Changes Task Description</DialogTitle>
                         </DialogHeader>
                         <Input
                             className="my-4"

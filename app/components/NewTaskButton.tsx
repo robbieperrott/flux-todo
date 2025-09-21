@@ -14,19 +14,19 @@ interface NewTaskButtonProps {
 export default function NewTaskButton(props: NewTaskButtonProps) {
     const {listId} = props;
     const [description, setDescription] = useState("");
-    const [openDialog, setOpenDialog] = useState(false);
+    const [open, setOpen] = useState(false);
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         await createTask(description, listId, location.pathname);
-        setOpenDialog(false);  
+        setOpen(false);  
     }
 
-    return <Dialog open={openDialog}>
-            <DialogTrigger onClick={() => setOpenDialog(true)} asChild>
+    return <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
             <Button><Plus/>New Task</Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent showCloseButton={false}>
                     <DialogHeader>
                         <DialogTitle>New Task</DialogTitle>
                     </DialogHeader>

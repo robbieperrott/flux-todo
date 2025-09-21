@@ -19,15 +19,15 @@ export default function UpdateListTitle(props: UpdateListTitleButtonProps) {
 
   async function updateListTitle(e: React.FormEvent) {
         e.preventDefault();
-        await updateList({id: listId, title}, location.pathname)
+        await updateList({id: listId, title}, location.pathname);
         setOpen(false);
   }
 
-  return <Dialog open={open}>
-            <DialogTrigger onClick={() => setOpen(true)} asChild>
+  return <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
             <PenLine size={20}/>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent showCloseButton={false}>
                     <DialogHeader>
                         <DialogTitle>Change List Name</DialogTitle>
                     </DialogHeader>

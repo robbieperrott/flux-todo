@@ -6,11 +6,10 @@ import { X } from "lucide-react";
 import EditTaskDescription from "./EditTaskDescription";
 import { deleteTask, updateTask } from "../actions";
 import { useOptimistic, useTransition } from "react";
+import { Task } from "../generated/prisma/browser";
 
 interface TaskCardProps {
-  task: {complete: boolean;
-  description: string;
-  id: number;}
+  task: Task
 }
 
 export default function TaskCard(props: TaskCardProps) {
@@ -18,19 +17,20 @@ export default function TaskCard(props: TaskCardProps) {
 
     const [isPending, startTransition] = useTransition();
 
-    const [optimisticComplete, updateOptimisticComplete] = useOptimistic<
-        boolean,
-        boolean
+    const [optimisticTask, updateOptimisticTask] = useOptimistic<
+        Task,
+        Partial<Task>
     >(
-        task.complete,
-        (_, optimisticCompleteValue) => {
-            return optimisticCompleteValue;
+        task,
+        (currentTask, optimisticTask) => {
+            console.log(optimisticTask);
+            return {...currentTask, ...optimisticTask}
         }
     );
 
     const updateTaskComplete = (e: React.FormEvent) => startTransition(async () => {
         e.preventDefault();
-        updateOptimisticComplete(!task.complete)
+        updateOptimisticTask({complete: !task.complete})
         await updateTask({id: task.id, complete: !task.complete}, location.pathname);
     })
 
@@ -45,9 +45,9 @@ export default function TaskCard(props: TaskCardProps) {
                 <Checkbox
                     disabled={isPending}    // Don't allow further changes while transition is happening
                     onClick={updateTaskComplete}
-                    checked={optimisticComplete}
+                    checked={optimisticTask.complete}
                 />
-                {task.description}
+                {optimisticTask.description}
             </div>
             <div className="flex items-center gap-4">
                 <EditTaskDescription taskId={task.id}/>

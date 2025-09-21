@@ -8,7 +8,7 @@ import { createList } from "../actions";
 import { Input } from "@/components/ui/input";
 import NewListButton from "./NewListButton";
 import { ListSortBy, ListWithTasks, SortDirection } from "../types";
-import SortMenu from "./SortMenu";
+import ListSortMenu from "./ListSortMenu";
 
 interface ListsProps {
     lists: ListWithTasks[];
@@ -75,7 +75,7 @@ export default function Lists(props: ListsProps) {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <SortMenu
+                <ListSortMenu
                     direction={sortDirection}
                     onChangeDirection={setSortDirection}
                     onChangeSortBy={setSortBy}

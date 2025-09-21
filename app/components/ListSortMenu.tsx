@@ -1,6 +1,5 @@
 "use client"
 
-import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -13,14 +12,14 @@ import {
 import { ArrowUpDown } from "lucide-react"
 import { ListSortBy, SortDirection } from "../types"
 
-interface SortMenuProps {
+interface ListSortMenuProps {
     sortBy: ListSortBy;
     onChangeSortBy: (sortBy: ListSortBy) => void;
     direction: SortDirection;
     onChangeDirection: (direction: SortDirection) => void;
 }
 
-export default function SortMenu(props: SortMenuProps) {
+export default function ListSortMenu(props: ListSortMenuProps) {
   const {direction, sortBy, onChangeSortBy, onChangeDirection} = props;
 
   return (

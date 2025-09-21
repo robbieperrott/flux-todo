@@ -25,6 +25,8 @@ export default function TaskCard(props: TaskCardProps) {
         onDelete(task);
     }
 
+    const handleUpdateDescription = (description: string) => onUpdate({...task, description})
+
     return <Card className="py-4 px-6" onClick={updateTaskComplete}>
         <CardContent className="flex px-0 justify-between items-center">
             <div className="flex items-center gap-4 overflow-hidden">
@@ -34,7 +36,7 @@ export default function TaskCard(props: TaskCardProps) {
                 {task.description}
             </div>
             <div className="flex items-center gap-4 pl-4">
-                {!task.complete && <EditTaskDescription taskId={task.id}/>}
+                {!task.complete && <EditTaskDescription taskId={task.id} onUpdate={handleUpdateDescription}/>}
                 <X size={18} onClick={handleDelete}/>
             </div>
         </CardContent>

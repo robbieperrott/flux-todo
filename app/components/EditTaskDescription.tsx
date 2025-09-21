@@ -3,22 +3,22 @@ import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogT
 import { Input } from "@/components/ui/input";
 import { PenLine } from "lucide-react";
 import { useState } from "react";
-import { updateTask } from "../actions";
 
 interface EditTaskDescriptionProps {
     taskId: number;
+    onUpdate: (description: string) => Promise<void>;
 }
 
 export default function EditTaskDescription(props: EditTaskDescriptionProps) {
-    const {taskId} = props;
+    const {onUpdate} = props;
     const [description, setDescription] = useState("");
     const [open, setOpen] = useState(false);
 
     async function handleSubmit(e: React.FormEvent) {
         e.stopPropagation();
-        await updateTask({id: taskId, description}, location.pathname);
         setOpen(false);
         setDescription("");
+        onUpdate(description);
     }
 
     return <Dialog open={open} onOpenChange={setOpen}>

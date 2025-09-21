@@ -56,14 +56,41 @@ export default function Lists(props: ListsProps) {
     const fractionCompleteString = (tasks: Task[]) => tasks.length ? `${tasks.filter(task => task.complete).length}/${tasks.length}` : '-'
 
     return <>
-        <div className="flex flex-col gap-4">
-            <Input
-                className="my-4"
-                type="text"
-                placeholder="Search for lists or tasks"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
+        <div className="flex flex-col gap-8">
+            <div className="flex flex-row gap-4">
+                <Input
+                    type="text"
+                    placeholder="Search for lists or tasks"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                    <DialogTrigger asChild>
+                        <Button><Plus/>New List</Button>
+                    </DialogTrigger>
+                    <DialogContent showCloseButton={false}>
+                        <form onSubmit={handleSubmit}>
+                            <DialogHeader>
+                                <DialogTitle>New List</DialogTitle>
+                            </DialogHeader>
+                            <Input
+                                    className="my-4"
+                                    type="text"
+                                    placeholder="Enter a new list name..."
+                                    value={newListTitle}
+                                    onChange={(e) => setNewListTitle(e.target.value)}
+                            />
+                            <DialogFooter>
+                                <DialogClose asChild>
+                                    <Button variant="outline">Cancel</Button>
+                                </DialogClose>
+                                <Button type="submit" disabled={isPending || newListTitle === ""}>Create</Button>
+                            </DialogFooter>
+                        </form>
+                    </DialogContent>
+                </Dialog>
+            </div>
+            <div className="flex flex-col gap-4">
             {filteredLists.map((list) => (
             <Link href={`/${list.id}`} key={list.id}>
                 <Card className="p-3">
@@ -74,33 +101,7 @@ export default function Lists(props: ListsProps) {
                 </Card>
             </Link>
             ))}
-        </div>
-        <div className="mt-8">
-            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogTrigger asChild>
-                <Button><Plus/>New List</Button>
-            </DialogTrigger>
-            <DialogContent showCloseButton={false}>
-                <form onSubmit={handleSubmit}>
-                    <DialogHeader>
-                        <DialogTitle>New List</DialogTitle>
-                    </DialogHeader>
-                    <Input
-                            className="my-4"
-                            type="text"
-                            placeholder="Enter a new list name..."
-                            value={newListTitle}
-                            onChange={(e) => setNewListTitle(e.target.value)}
-                    />
-                    <DialogFooter>
-                        <DialogClose asChild>
-                            <Button variant="outline">Cancel</Button>
-                        </DialogClose>
-                        <Button type="submit" disabled={isPending || newListTitle === ""}>Create</Button>
-                    </DialogFooter>
-                </form>
-            </DialogContent>
-        </Dialog>
+            </div>
         </div>
         </>
 }

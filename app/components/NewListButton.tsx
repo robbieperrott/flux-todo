@@ -5,31 +5,26 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Plus } from "lucide-react";
+import { createList } from "../actions";
 
 
 export default function NewListButton() {
     const [title, setTitle] = useState("");
+    const [openDialog, setOpenDialog] = useState(false);
     
-    async function createList(e: React.FormEvent) {
+    async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        if (!title) return;
-
-        await fetch("/api/lists", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ title }),
-        });
-
-        location.reload();
+        await createList(title, location.pathname);
+        setOpenDialog(false);  
     }
 
     return (
-        <Dialog>
-            <DialogTrigger asChild>
+        <Dialog open={openDialog}>
+            <DialogTrigger onClick={() => setOpenDialog(true)} asChild>
                 <Button><Plus/>New List</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
-                <form onSubmit={createList}>
+                <form onSubmit={handleSubmit}>
                     <DialogHeader>
                         <DialogTitle>New List</DialogTitle>
                     </DialogHeader>
@@ -42,9 +37,9 @@ export default function NewListButton() {
                     />
                     <DialogFooter>
                         <DialogClose asChild>
-                            <Button variant="outline">Cancel</Button>
+                            <Button onClick={() => setOpenDialog(false)} variant="outline">Cancel</Button>
                         </DialogClose>
-                        <Button type="submit">Create</Button>
+                        <Button type="submit" disabled={title === ""}>Create</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

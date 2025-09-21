@@ -15,15 +15,15 @@ export default function EditTaskDescription(props: EditTaskDescriptionProps) {
     const [open, setOpen] = useState(false);
 
     async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault();
+        e.stopPropagation();
         await updateTask({id: taskId, description}, location.pathname);
         setOpen(false);
         setDescription("");
     }
 
     return <Dialog open={open} onOpenChange={setOpen}>
-                <DialogTrigger asChild>
-                <PenLine size={20}/>
+                <DialogTrigger asChild onClick={(e) => e.stopPropagation()}>
+                    <PenLine size={20}/>
                 </DialogTrigger>
                 <DialogContent showCloseButton={false}>
                         <DialogHeader>
@@ -37,7 +37,7 @@ export default function EditTaskDescription(props: EditTaskDescriptionProps) {
                             onChange={(e) => setDescription(e.target.value)}
                         />
                         <DialogFooter>
-                            <DialogClose asChild>
+                            <DialogClose asChild onClick={(e) => e.stopPropagation()}>
                                 <Button variant="outline">Cancel</Button>
                             </DialogClose>
                             <Button onClick={handleSubmit}>Save</Button>

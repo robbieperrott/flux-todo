@@ -27,7 +27,7 @@ export default function DeleteListButton(props: DeleteListButtonProps) {
 
     return <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-            <Trash size={20}/>
+                <Trash size={20}/>
             </DialogTrigger>
             <DialogContent showCloseButton={false}>
                     <DialogHeader>

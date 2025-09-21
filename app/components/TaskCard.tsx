@@ -34,7 +34,7 @@ export default function TaskCard(props: TaskCardProps) {
     })
 
     async function handleDelete(e: React.FormEvent) {
-        e.preventDefault();
+        e.stopPropagation();
         await deleteTask(task.id, location.pathname)
     }
 

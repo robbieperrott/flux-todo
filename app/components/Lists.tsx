@@ -53,7 +53,7 @@ export default function Lists(props: ListsProps) {
         await createList(newListTitle, location.pathname);
     });
 
-    const fractionCompleteString = (tasks: Task[]) => tasks.length ? `${tasks.filter(task => task.complete).length}/${tasks.length}` : '-'
+    const fractionCompleteString = (tasks: Task[]) => tasks.length ? `${tasks.filter(task => task.complete).length} / ${tasks.length}` : '-'
 
     return <>
         <div className="flex flex-col gap-8">
@@ -93,8 +93,8 @@ export default function Lists(props: ListsProps) {
             <div className="flex flex-col gap-4">
             {filteredLists.map((list) => (
             <Link href={`/${list.id}`} key={list.id}>
-                <Card className="p-3">
-                <CardContent className="flex justify-between">
+                <Card className="py-4 px-6">
+                <CardContent className="flex justify-between px-0">
                     <div className="overflow-hidden">{list.title}</div>
                     <div className="pl-4">{fractionCompleteString(list.tasks)}</div>
                 </CardContent>

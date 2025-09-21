@@ -38,8 +38,8 @@ export default function TaskCard(props: TaskCardProps) {
         await deleteTask(task.id, location.pathname)
     }
 
-    return <Card className="p-3" onClick={updateTaskComplete}>
-        <CardContent className="flex px-2 justify-between items-center">
+    return <Card className="py-4 px-6" onClick={updateTaskComplete}>
+        <CardContent className="flex px-0 justify-between items-center">
             <div className="flex items-center gap-4 overflow-hidden">
                 <Checkbox
                     disabled={isPending}    // Don't allow further changes while transition is happening
@@ -49,7 +49,7 @@ export default function TaskCard(props: TaskCardProps) {
             </div>
             <div className="flex items-center gap-4 pl-4">
                 {!task.complete && <EditTaskDescription taskId={task.id}/>}
-                <X size={20} onClick={handleDelete}/>
+                <X size={18} onClick={handleDelete}/>
             </div>
         </CardContent>
     </Card>

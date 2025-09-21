@@ -1,5 +1,5 @@
 "use client"
-import { useOptimistic, useTransition } from "react";
+import { startTransition, useOptimistic } from "react";
 import { createTask, deleteTask, updateTask } from "../actions";
 import { ListWithTasks } from "../types";
 import DeleteListButton from "./DeleteListButton";
@@ -15,8 +15,6 @@ interface TasksProps {
 export default function Tasks(props: TasksProps) {
     const {list} = props;
     
-    const [isPending, startTransition] = useTransition();
-    
     const [optimisticTasks, setOptimisticTasks] = useOptimistic(
         list.tasks,
         (state, { action, task }: { action: string; task: Task }) => {
@@ -31,7 +29,7 @@ export default function Tasks(props: TasksProps) {
         },
     );
 
-    const handleSubmitNewTask = async (description: string) => startTransition(async () => {
+    const handleCreateTask = async (description: string) => startTransition(async () => {
         setOptimisticTasks({
             action: "create",
             task: {
@@ -45,7 +43,7 @@ export default function Tasks(props: TasksProps) {
         await createTask(description, list.id, location.pathname);
     });
 
-    const handleDelete = async (task: Task) => startTransition(async () => {
+    const handleDeleteTask = async (task: Task) => startTransition(async () => {
         setOptimisticTasks({
             action: "delete",
             task
@@ -53,7 +51,7 @@ export default function Tasks(props: TasksProps) {
         await deleteTask(task.id, location.pathname)
     });
 
-    const handleUpdate = async (task: Task) => startTransition(async () => {
+    const handleUpdateTask = async (task: Task) => startTransition(async () => {
         setOptimisticTasks({
             action: "update",
             task
@@ -63,23 +61,24 @@ export default function Tasks(props: TasksProps) {
 
     const sortedTasks = optimisticTasks.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
 
-    return <><div className="flex justify-between mb-4">
-        <div className="text-xl font-semibold my-auto">
-          {list.title}
+    return <>
+        <div className="flex justify-between mb-4">
+            <div className="text-xl font-semibold my-auto">
+                {list.title}
+                </div>
+                <div className="flex gap-4 items-center">
+                <UpdateListTitleButton listId={list.id}/>
+                <DeleteListButton listId={list.id}/>
+                <NewTaskButton onSubmit={handleCreateTask}/>
+                </div>
+            </div>
+            <div className="flex flex-col gap-4">
+                {sortedTasks.map((task) => <TaskCard
+                    key={task.id}
+                    task={task}
+                    onDelete={handleDeleteTask}
+                    onUpdate={handleUpdateTask}
+                />)}
         </div>
-        <div className="flex gap-4 items-center">
-          <UpdateListTitleButton listId={list.id}/>
-          <DeleteListButton listId={list.id}/>
-          <NewTaskButton isPending={isPending} onSubmit={handleSubmitNewTask}/>
-        </div>
-      </div>
-      <div className="flex flex-col gap-4">
-        {sortedTasks.map((task) => <TaskCard
-            key={task.id}
-            task={task}
-            onDelete={handleDelete}
-            onUpdate={handleUpdate}
-        />)}
-      </div>
     </>
 }

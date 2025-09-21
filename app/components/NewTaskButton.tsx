@@ -8,12 +8,11 @@ import { useState } from "react";
 import { createTask } from "../actions";
 
 interface NewTaskButtonProps {
-    isPending: boolean;
     onSubmit: (description: string) => Promise<void>;
 }
 
 export default function NewTaskButton(props: NewTaskButtonProps) {
-    const {isPending, onSubmit} = props;
+    const {onSubmit} = props;
 
     const [description, setDescription] = useState("");
     const [open, setOpen] = useState(false);

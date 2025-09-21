@@ -23,7 +23,6 @@ export default function TaskCard(props: TaskCardProps) {
     >(
         task,
         (currentTask, optimisticTask) => {
-            console.log(optimisticTask);
             return {...currentTask, ...optimisticTask}
         }
     );
@@ -39,12 +38,11 @@ export default function TaskCard(props: TaskCardProps) {
         await deleteTask(task.id, location.pathname)
     }
 
-    return <Card className="p-3">
+    return <Card className="p-3" onClick={updateTaskComplete}>
         <CardContent className="flex px-2 justify-between items-center">
             <div className="flex items-center gap-4">
                 <Checkbox
                     disabled={isPending}    // Don't allow further changes while transition is happening
-                    onClick={updateTaskComplete}
                     checked={optimisticTask.complete}
                 />
                 {optimisticTask.description}

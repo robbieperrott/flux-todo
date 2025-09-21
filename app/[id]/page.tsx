@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import UpdateListTitleButton from "../components/UpdateListTitleButton";
 import DeleteListButton from "../components/DeleteListButton";
 import NewTaskButton from "../components/NewTaskButton";
-import TaskCard from "../components/TaskCard";
+import Tasks from "../components/Tasks";
 
 export default async function ListPage({
   params,
@@ -17,8 +17,6 @@ export default async function ListPage({
       throw new Error("No list found");
     }
 
-    const sortedTasks = list.tasks.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
-
     return <div>
       <div className="flex justify-between mb-4">
         <div className="text-xl font-semibold my-auto">
@@ -30,9 +28,6 @@ export default async function ListPage({
           <NewTaskButton listId={list.id}/>
         </div>
       </div>
-        
-      <div className="flex flex-col gap-4">
-        {sortedTasks.map((task) => <TaskCard key={task.id} task={task}/>)}
-      </div>
+      <Tasks tasks={list.tasks}/>
     </div>
 }

@@ -55,7 +55,7 @@ const Navbar = async () => {
   return (
     <header className="flex w-full items-center p-4 gap-4 h-16 border-b">
       <Link href="/">
-        <Button variant="ghost">
+        <Button variant="secondary">
           <Home/>
         </Button>
       </Link>

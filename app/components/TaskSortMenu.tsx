@@ -23,7 +23,7 @@ export default function TaskSortMenu(props: TaskSortMenuProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon"><ArrowUpDown/></Button>
+        <Button variant="secondary" size="icon"><ArrowUpDown/></Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Sort By</DropdownMenuLabel>

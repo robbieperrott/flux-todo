@@ -98,9 +98,9 @@ export default function List(props: ListProps) {
                 {optimisticListTitle}
             </div>
             <div className="flex gap-2 items-center">
+                <TaskSortMenu sortBy={sortBy} onChangeSortBy={setSortBy} direction={sortDirection} onChangeDirection={setSortDirection} />
                 <UpdateListTitleButton initialTitle={list.title} onUpdate={handleUpdateListTitle}/>
                 <DeleteListButton listId={list.id}/>
-                <TaskSortMenu sortBy={sortBy} onChangeSortBy={setSortBy} direction={sortDirection} onChangeDirection={setSortDirection} />
                 <NewTaskButton onSubmit={handleCreateTask}/>
             </div>
             </div>

@@ -32,7 +32,7 @@ export default function UpdateListTitle(props: UpdateListTitleButtonProps) {
 
     return <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-            <Button variant="ghost" size="icon"><PenLine size={20}/></Button>
+            <Button variant="secondary" size="icon"><PenLine size={20}/></Button>
             </DialogTrigger>
             <DialogContent showCloseButton={false}>
                     <DialogHeader>

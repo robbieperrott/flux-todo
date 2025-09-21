@@ -1,13 +1,13 @@
 "use client"
 import { startTransition, useOptimistic, useState } from "react";
 import { createTask, deleteTask, updateList, updateTask } from "../actions";
-import { ListWithTasks, SortDirection, SortBy } from "../types";
+import { ListWithTasks, SortDirection, SortBy, Filter } from "../types";
 import DeleteListButton from "./DeleteListButton";
 import NewTaskButton from "./NewTaskButton";
 import TaskCard from "./TaskCard";
 import UpdateListTitleButton from "./UpdateListTitleButton";
 import { Task } from "../generated/prisma/browser";
-import SortMenu from "./SortMenu";
+import ControlMenu from "./ControlMenu";
 
 
 interface ListProps {
@@ -19,7 +19,7 @@ export default function List(props: ListProps) {
 
     const [sortBy, setSortBy] = useState<SortBy>("createdAt");
     const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
-
+    const [filter, setFilter] = useState<Filter | null>(null);
 
     const [optimisticListTitle, setOptimisticListTitle] = useOptimistic<string, string>(
         list.title,
@@ -91,7 +91,17 @@ export default function List(props: ListProps) {
         }
     }
 
-    const sortedTasks = optimisticTasks.sort(sortFunction());
+    const filteredTasks = optimisticTasks.filter(task => {
+        if (filter === "complete") {
+            return task.complete;
+        } else if (filter === "incomplete") {
+            return !task.complete
+        } else {
+            return true;
+        }
+    })
+
+    const sortedTasks = filteredTasks.sort(sortFunction());
 
     return <>
         <div className="flex justify-between mb-4">
@@ -99,7 +109,9 @@ export default function List(props: ListProps) {
                 {optimisticListTitle}
             </div>
             <div className="flex gap-2 items-center">
-                <SortMenu
+                <ControlMenu
+                    filter={filter}
+                    onChangeFilter={setFilter}
                     sortBy={sortBy}
                     onChangeSortBy={setSortBy}
                     direction={sortDirection}

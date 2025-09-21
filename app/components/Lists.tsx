@@ -7,8 +7,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { createList } from "../actions";
 import { Input } from "@/components/ui/input";
 import NewListButton from "./NewListButton";
-import { SortBy, ListWithTasks, SortDirection } from "../types";
-import SortMenu from "./SortMenu";
+import { SortBy, ListWithTasks, SortDirection, Filter } from "../types";
+import ControlMenu from "./ControlMenu";
 
 interface ListsProps {
     lists: ListWithTasks[];
@@ -22,6 +22,7 @@ export default function Lists(props: ListsProps) {
     const [searchTerm, setSearchTerm] = useState("");
     const [sortBy, setSortBy] = useState<SortBy>("createdAt");
     const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
+    const [filter, setFilter] = useState<Filter | null>(null);
 
     const [optimisticLists, addOptimisticList] = useOptimistic<
         ListWithTasks[],
@@ -44,8 +45,23 @@ export default function Lists(props: ListsProps) {
 
     const fractionCompleteString = (tasks: Task[]) => tasks.length ? `${tasks.filter(task => task.complete).length} / ${tasks.length}` : '-';
 
-    const listFilter = (list: ListWithTasks) => {
+    const listPassesFilter = (list: ListWithTasks) => {
+        const allTasksComplete = list.tasks.length && list.tasks.every(task => task.complete);
+        if (filter === "complete") {
+            return allTasksComplete
+        } else if (filter === "incomplete") {
+            return !allTasksComplete
+        } else {
+            return true;
+        }
+    }
+
+    const listPassesSearch = (list: ListWithTasks) => {
         return list.title.toLowerCase().includes(searchTerm.toLowerCase()) || list.tasks.find(task => task.description.toLowerCase().includes(searchTerm.toLowerCase()))
+    }
+
+    const listFilter = (list: ListWithTasks) => {
+        return listPassesFilter(list) && listPassesSearch(list)
     }
 
     const filteredLists = optimisticLists.filter(listFilter);
@@ -75,11 +91,13 @@ export default function Lists(props: ListsProps) {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <SortMenu
+                <ControlMenu
                     direction={sortDirection}
                     onChangeDirection={setSortDirection}
-                    onChangeSortBy={setSortBy}
                     sortBy={sortBy}
+                    onChangeSortBy={setSortBy}
+                    filter={filter}
+                    onChangeFilter={setFilter}
                     textFieldName="Title"
                 />
                 <NewListButton

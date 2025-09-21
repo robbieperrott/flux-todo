@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { X } from "lucide-react";
 import EditTaskDescription from "./EditTaskDescription";
-import { updateTask } from "../actions";
+import { deleteTask, updateTask } from "../actions";
 
 interface TaskCardProps {
   task: {complete: boolean;
@@ -20,14 +20,9 @@ export default function TaskCard(props: TaskCardProps) {
         await updateTask({id: task.id, complete: !task.complete}, location.pathname);
     }
 
-    async function deleteTask(e: React.FormEvent) {
+    async function handleDelete(e: React.FormEvent) {
         e.preventDefault();
-
-        await fetch(`/api/tasks/${task.id}`, {
-            method: "DELETE",
-        });
-
-        location.reload();
+        await deleteTask(task.id, location.pathname)
     }
 
     return <Card className="p-3">
@@ -38,7 +33,7 @@ export default function TaskCard(props: TaskCardProps) {
             </div>
             <div className="flex items-center gap-4">
                 <EditTaskDescription taskId={task.id}/>
-                <X size={20} onClick={deleteTask}/>
+                <X size={20} onClick={handleDelete}/>
             </div>
         </CardContent>
     </Card>

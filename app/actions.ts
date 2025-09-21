@@ -49,10 +49,18 @@ export async function updateTask(task: TaskUpdate, pathname: string) {
     revalidatePath(pathname);
 }
 
-export async function deleteList(listId: number, redirectPathname: string) {
+export async function deleteList(id: number, redirectPathname: string) {
     await prisma.list.delete({
-        where: { id: listId }
+        where: { id }
     });
 
     redirect(redirectPathname);
+}
+
+export async function deleteTask(id: number, pathname: string) {
+    await prisma.task.delete({
+        where: { id }
+    });
+
+    revalidatePath(pathname);
 }

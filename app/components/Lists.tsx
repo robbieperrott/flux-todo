@@ -95,9 +95,9 @@ export default function Lists(props: ListsProps) {
             <Link href={`/${list.id}`} key={list.id}>
                 <Card className="p-3">
                 <CardContent className="flex justify-between">
-                    {list.title}
-                    <div>{fractionCompleteString(list.tasks)}</div>
-                    </CardContent>
+                    <div className="overflow-hidden">{list.title}</div>
+                    <div className="pl-4">{fractionCompleteString(list.tasks)}</div>
+                </CardContent>
                 </Card>
             </Link>
             ))}

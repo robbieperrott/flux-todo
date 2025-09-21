@@ -40,14 +40,14 @@ export default function TaskCard(props: TaskCardProps) {
 
     return <Card className="p-3" onClick={updateTaskComplete}>
         <CardContent className="flex px-2 justify-between items-center">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 overflow-hidden">
                 <Checkbox
                     disabled={isPending}    // Don't allow further changes while transition is happening
                     checked={optimisticTask.complete}
                 />
                 {optimisticTask.description}
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 pl-4">
                 <EditTaskDescription taskId={task.id}/>
                 <X size={20} onClick={handleDelete}/>
             </div>

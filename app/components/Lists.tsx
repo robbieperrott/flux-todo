@@ -7,8 +7,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { createList } from "../actions";
 import { Input } from "@/components/ui/input";
 import NewListButton from "./NewListButton";
-import { ListSortBy, ListWithTasks, SortDirection } from "../types";
-import ListSortMenu from "./ListSortMenu";
+import { SortBy, ListWithTasks, SortDirection } from "../types";
+import SortMenu from "./SortMenu";
 
 interface ListsProps {
     lists: ListWithTasks[];
@@ -20,7 +20,7 @@ export default function Lists(props: ListsProps) {
 
     const [isPending, startTransition] = useTransition();
     const [searchTerm, setSearchTerm] = useState("");
-    const [sortBy, setSortBy] = useState<ListSortBy>("createdAt");
+    const [sortBy, setSortBy] = useState<SortBy>("createdAt");
     const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 
     const [optimisticLists, addOptimisticList] = useOptimistic<
@@ -56,7 +56,7 @@ export default function Lists(props: ListsProps) {
                 const [c,d] = sortDirection === "asc" ? [a,b] : [b,a];
                 return c.createdAt.getTime() - d.createdAt.getTime()
             };
-        } else if (sortBy === "title") {
+        } else if (sortBy === "text") {
             return (a: List, b: List) => {
                 const [c,d] = sortDirection === "asc" ? [a,b] : [b,a];
                 return c.title < d.title ? -1 : 1;
@@ -75,11 +75,12 @@ export default function Lists(props: ListsProps) {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <ListSortMenu
+                <SortMenu
                     direction={sortDirection}
                     onChangeDirection={setSortDirection}
                     onChangeSortBy={setSortBy}
                     sortBy={sortBy}
+                    textFieldName="Title"
                 />
                 <NewListButton
                     isPending={isPending}

@@ -1,13 +1,14 @@
 "use client"
 import { startTransition, useOptimistic, useState } from "react";
 import { createTask, deleteTask, updateList, updateTask } from "../actions";
-import { ListWithTasks, SortDirection, TaskSortBy } from "../types";
+import { ListWithTasks, SortDirection, SortBy } from "../types";
 import DeleteListButton from "./DeleteListButton";
 import NewTaskButton from "./NewTaskButton";
 import TaskCard from "./TaskCard";
 import UpdateListTitleButton from "./UpdateListTitleButton";
 import { Task } from "../generated/prisma/browser";
-import TaskSortMenu from "./TaskSortMenu";
+import SortMenu from "./SortMenu";
+
 
 interface ListProps {
     list: ListWithTasks;
@@ -16,7 +17,7 @@ interface ListProps {
 export default function List(props: ListProps) {
     const {list} = props;
 
-    const [sortBy, setSortBy] = useState<TaskSortBy>("createdAt");
+    const [sortBy, setSortBy] = useState<SortBy>("createdAt");
     const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 
 
@@ -82,7 +83,7 @@ export default function List(props: ListProps) {
                 const [c,d] = sortDirection === "asc" ? [a,b] : [b,a];
                 return c.createdAt.getTime() - d.createdAt.getTime()
             };
-        } else if (sortBy === "description") {
+        } else if (sortBy === "text") {
             return (a: Task, b: Task) => {
                 const [c,d] = sortDirection === "asc" ? [a,b] : [b,a];
                 return c.description < d.description ? -1 : 1;
@@ -98,7 +99,13 @@ export default function List(props: ListProps) {
                 {optimisticListTitle}
             </div>
             <div className="flex gap-2 items-center">
-                <TaskSortMenu sortBy={sortBy} onChangeSortBy={setSortBy} direction={sortDirection} onChangeDirection={setSortDirection} />
+                <SortMenu
+                    sortBy={sortBy}
+                    onChangeSortBy={setSortBy}
+                    direction={sortDirection}
+                    onChangeDirection={setSortDirection}
+                    textFieldName="Description"
+                />
                 <UpdateListTitleButton initialTitle={list.title} onUpdate={handleUpdateListTitle}/>
                 <DeleteListButton listId={list.id}/>
                 <NewTaskButton onSubmit={handleCreateTask}/>

@@ -8,17 +8,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { ArrowUpDown } from "lucide-react"
-import { TaskSortBy, SortDirection } from "../types"
+import { SortBy, SortDirection } from "../types"
 
-interface TaskSortMenuProps {
-    sortBy: TaskSortBy;
-    onChangeSortBy: (sortBy: TaskSortBy) => void;
+interface SortMenuProps {
+    sortBy: SortBy;
+    onChangeSortBy: (sortBy: SortBy) => void;
     direction: SortDirection;
     onChangeDirection: (direction: SortDirection) => void;
+    textFieldName: string;  // E.g. "title" or "description"
 }
 
-export default function TaskSortMenu(props: TaskSortMenuProps) {
-  const {direction, sortBy, onChangeSortBy, onChangeDirection} = props;
+export default function SortMenu(props: SortMenuProps) {
+  const {direction, sortBy, onChangeSortBy, onChangeDirection, textFieldName} = props;
 
   return (
     <DropdownMenu>
@@ -34,10 +35,10 @@ export default function TaskSortMenu(props: TaskSortMenuProps) {
           Created At
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem
-          checked={sortBy === "description"}
-          onClick={(e) => {e.preventDefault(); onChangeSortBy("description")}}
+          checked={sortBy === "text"}
+          onClick={(e) => {e.preventDefault(); onChangeSortBy("text")}}
         >
-          Title
+          {textFieldName}
         </DropdownMenuCheckboxItem>
         <DropdownMenuSeparator />
         <DropdownMenuLabel>Direction</DropdownMenuLabel>

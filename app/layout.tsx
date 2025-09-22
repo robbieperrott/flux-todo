@@ -9,7 +9,7 @@ import {
   SignedOut,
   SignedIn,
 } from "@clerk/nextjs";
-import { Home } from "lucide-react"
+import { List } from "lucide-react"
 import Link from "next/link";
 import { currentUser } from "@clerk/nextjs/server";
 import { Button } from "@/components/ui/button";
@@ -61,11 +61,11 @@ const Navbar = async () => {
   return (
     <header className="flex w-full items-center p-4 gap-4 h-16 border-b">
       <div className="w-[20%]">
-        <Link href="/">
+        <SignedIn><Link href="/">
           <Button variant="secondary">
-            <Home/>
+            <List/>
           </Button>
-        </Link>
+        </Link></SignedIn>
       </div>
       <div className="flex w-full justify-center text-2xl font-extrabold">
         {title}

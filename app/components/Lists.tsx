@@ -122,7 +122,7 @@ function ListCard(props: ListCardProps) {
     const fractionCompleteString = (tasks: Task[]) => tasks.length ? `${tasks.filter(task => task.complete).length} / ${tasks.length}` : '-';
 
     return <Link className={list.pending ? "pointer-events-none" : ""} href={`/${list.id}`}>
-        <Card key={list.id} className={`py-4 px-6 ${list.pending ? "text-muted-foreground" : ""}`}>
+        <Card key={list.id} className={`py-4 px-6 hover:bg-secondary ${list.pending ? "text-muted-foreground" : ""}`}>
             <CardContent className="flex justify-between px-0">
                 <div className="overflow-hidden">{list.title}</div>
                 <div className="pl-4">{fractionCompleteString(list.tasks)}</div>

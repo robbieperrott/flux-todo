@@ -105,7 +105,7 @@ export default function List(props: ListProps) {
     const sortedTasks = filteredTasks.sort(sortFunction());
 
     return <>
-        <div className="flex justify-between mb-4">
+        <div className="flex justify-between mb-8">
             <div className="text-xl font-semibold my-auto">
                 {optimisticListTitle}
             </div>
@@ -123,8 +123,8 @@ export default function List(props: ListProps) {
                 <DeleteListButton listId={list.id}/>
                 <NewTaskButton onSubmit={handleCreateTask}/>
             </div>
-            </div>
-            <div className="flex flex-col gap-4">
+        </div>
+        <div className="flex flex-col gap-4">
                 {sortedTasks.map((task) => <TaskCard
                     key={task.id}
                     task={task}

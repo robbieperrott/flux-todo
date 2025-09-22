@@ -9,7 +9,7 @@ import {
   SignedOut,
   SignedIn,
 } from "@clerk/nextjs";
-import { List } from "lucide-react"
+import { List } from "lucide-react";
 import Link from "next/link";
 import { currentUser } from "@clerk/nextjs/server";
 import { Button } from "@/components/ui/button";
@@ -38,13 +38,18 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
           <Navbar />
           <div className="max-w-2xl mx-auto p-12">
             <SignedOut>
               <div className="flex gap-4 justify-center mb-8">
-                <SignInButton><Button>Sign In</Button></SignInButton>
-                <SignUpButton><Button variant="outline">Sign Up</Button></SignUpButton>
+                <SignInButton>
+                  <Button>Sign In</Button>
+                </SignInButton>
+                <SignUpButton>
+                  <Button variant="outline">Sign Up</Button>
+                </SignUpButton>
               </div>
             </SignedOut>
             {children}
@@ -57,15 +62,17 @@ export default function RootLayout({
 
 const Navbar = async () => {
   const user = await currentUser();
-  const title = user ? `${user.firstName}'s Todos` : "Todos"
+  const title = user ? `${user.firstName}'s Todos` : "Todos";
   return (
     <header className="flex w-full items-center p-4 gap-4 h-16 border-b">
       <div className="w-[20%]">
-        <SignedIn><Link href="/">
-          <Button variant="secondary">
-            <List/>
-          </Button>
-        </Link></SignedIn>
+        <SignedIn>
+          <Link href="/">
+            <Button variant="secondary">
+              <List />
+            </Button>
+          </Link>
+        </SignedIn>
       </div>
       <div className="flex w-full justify-center text-2xl font-extrabold">
         {title}

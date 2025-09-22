@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -6,37 +6,51 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { ArrowUpDown } from "lucide-react"
-import { SortBy, SortDirection } from "../types"
+} from "@/components/ui/dropdown-menu";
+import { ArrowUpDown } from "lucide-react";
+import { SortBy, SortDirection } from "../types";
 
 interface SortMenuProps {
-    sortBy: SortBy;
-    onChangeSortBy: (sortBy: SortBy) => void;
-    direction: SortDirection;
-    onChangeDirection: (direction: SortDirection) => void;
-    textFieldName: string;  // E.g. "title" or "description"
+  sortBy: SortBy;
+  onChangeSortBy: (sortBy: SortBy) => void;
+  direction: SortDirection;
+  onChangeDirection: (direction: SortDirection) => void;
+  textFieldName: string; // E.g. "title" or "description"
 }
 
 export default function SortMenu(props: SortMenuProps) {
-  const {direction, sortBy, onChangeSortBy, onChangeDirection, textFieldName} = props;
+  const {
+    direction,
+    sortBy,
+    onChangeSortBy,
+    onChangeDirection,
+    textFieldName,
+  } = props;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="secondary" size="icon"><ArrowUpDown/></Button>
+        <Button variant="secondary" size="icon">
+          <ArrowUpDown />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Sort By</DropdownMenuLabel>
         <DropdownMenuCheckboxItem
-          checked={sortBy === 'createdAt'}
-          onClick={(e) => {e.preventDefault(); onChangeSortBy("createdAt")}}
+          checked={sortBy === "createdAt"}
+          onClick={(e) => {
+            e.preventDefault();
+            onChangeSortBy("createdAt");
+          }}
         >
           Created At
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem
           checked={sortBy === "text"}
-          onClick={(e) => {e.preventDefault(); onChangeSortBy("text")}}
+          onClick={(e) => {
+            e.preventDefault();
+            onChangeSortBy("text");
+          }}
         >
           {textFieldName}
         </DropdownMenuCheckboxItem>
@@ -45,19 +59,23 @@ export default function SortMenu(props: SortMenuProps) {
         <DropdownMenuLabel>Direction</DropdownMenuLabel>
         <DropdownMenuCheckboxItem
           checked={direction === "asc"}
-          onClick={(e) => {e.preventDefault(); onChangeDirection("asc")}}
+          onClick={(e) => {
+            e.preventDefault();
+            onChangeDirection("asc");
+          }}
         >
           Ascending
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem
           checked={direction === "desc"}
-          onClick={(e) => {e.preventDefault(); onChangeDirection("desc")}}
+          onClick={(e) => {
+            e.preventDefault();
+            onChangeDirection("desc");
+          }}
         >
           Descending
         </DropdownMenuCheckboxItem>
-
-      
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

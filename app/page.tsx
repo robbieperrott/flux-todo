@@ -4,7 +4,9 @@ import Lists from "./components/Lists";
 
 export default async function ListsPage() {
   const user = await currentUser();
-  if (!user) return <div className="flex justify-center">Sign in to manage your todo lists.</div>;
+  if (!user) return <div className="flex justify-center">
+    Sign in or sign up to manage your todo lists.
+  </div>;
 
   const lists = await prisma.list.findMany({
     where: { user: { clerkId: user.id } },

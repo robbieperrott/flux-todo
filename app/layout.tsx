@@ -41,6 +41,12 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <Navbar />
           <div className="max-w-2xl mx-auto p-12">
+            <SignedOut>
+              <div className="flex gap-4 justify-center mb-8">
+                <SignInButton><Button>Sign In</Button></SignInButton>
+                <SignUpButton><Button variant="outline">Sign Up</Button></SignUpButton>
+              </div>
+            </SignedOut>
             {children}
           </div>
         </body>
@@ -65,12 +71,6 @@ const Navbar = async () => {
         {title}
       </div>
       <div className="w-[20%] flex justify-end items-center">
-        <SignedOut>
-          <div className="flex gap-4">
-            <SignInButton><Button>Sign In</Button></SignInButton>
-            <SignUpButton><Button variant="outline">Sign Up</Button></SignUpButton>
-          </div>
-        </SignedOut>
         <SignedIn>
           <UserButton />
         </SignedIn>

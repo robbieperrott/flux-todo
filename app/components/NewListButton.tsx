@@ -11,7 +11,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import { isMobile } from "../isMobile";
 
 interface NewListButtonProps {
   onSubmit: (newListTitle: string) => Promise<void>;
@@ -35,7 +34,7 @@ export default function NewListButton(props: NewListButtonProps) {
       <DialogTrigger asChild>
         <Button>
           <Plus />
-          {isMobile() ? "" : "New List"}
+          New List
         </Button>
       </DialogTrigger>
       <DialogContent showCloseButton={false}>

@@ -24,12 +24,12 @@ export default function TaskCard(props: TaskCardProps) {
 
     const handleUpdateDescription = (description: string) => onUpdate({...task, description})
 
-    return <Card className={`bg-foreground hover:bg-secondary-foreground py-4 px-6 text-background ${task.pending ? "pointer-events-none bg-secondary-foreground text-muted-foreground" : ""}`} onClick={updateTaskComplete}>
+    return <Card className={`bg-foreground hover:bg-secondary-foreground py-4 px-6 text-background border-none ${task.pending ? "pointer-events-none bg-secondary-foreground text-muted-foreground" : ""}`} onClick={updateTaskComplete}>
         <CardContent className="flex px-0 justify-between items-center">
             <div className="flex items-center gap-4 overflow-hidden">
                 <Checkbox
                     disabled={task.pending}
-                    className="bg-background"
+                    className={"bg-background data-[state=checked]:bg-inherit border-none"}
                     checked={task.complete}
                 />
                 <div className={task.complete ? "line-through" : ""}>{task.description}</div>

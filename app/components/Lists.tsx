@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import NewListButton from "./NewListButton";
 import { SortBy, ListWithTasks, SortDirection, Filter } from "../types";
 import ControlMenu from "./ControlMenu";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type ListDisplay = ListWithTasks & {pending?: boolean}
 
@@ -20,7 +20,6 @@ interface ListsProps {
 export default function Lists(props: ListsProps) {
     const {lists, userId} = props;
 
-    const router = useRouter();
     const [searchTerm, setSearchTerm] = useState("");
     const [sortBy, setSortBy] = useState<SortBy>("createdAt");
     const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
@@ -46,8 +45,7 @@ export default function Lists(props: ListsProps) {
         await createList(newListTitle, location.pathname);
     });
 
-    const fractionCompleteString = (tasks: Task[]) => tasks.length ? `${tasks.filter(task => task.complete).length} / ${tasks.length}` : '-';
-
+    
     const listPassesFilter = (list: ListDisplay) => {
         const allTasksComplete = list.tasks.length && list.tasks.every(task => task.complete);
         if (filter === "complete") {
@@ -85,10 +83,6 @@ export default function Lists(props: ListsProps) {
 
     const sortedLists = filteredLists.sort(sortFunction());
 
-    const handleListClick = (list: ListDisplay) => {
-        if (!list.pending) router.push(`/${list.id}`);
-    }
-
     return <>
         <div className="flex flex-col gap-8">
             <div className="flex flex-row gap-4">
@@ -113,14 +107,28 @@ export default function Lists(props: ListsProps) {
             </div>
             <div className="flex flex-col gap-4">
             {sortedLists.map((list) => (
-                <Card key={list.id} onClick={() => handleListClick(list)} className="py-4 px-6">
-                    <CardContent className="flex justify-between px-0">
-                        <div className="overflow-hidden">{list.title}</div>
-                        <div className="pl-4">{fractionCompleteString(list.tasks)}</div>
-                    </CardContent>
-                </Card>
+                <ListCard key={list.id} list={list}/>
             ))}
             </div>
         </div>
         </>
+}
+
+interface ListCardProps {
+    list: ListDisplay;
+}
+
+function ListCard(props: ListCardProps) {
+    const {list} = props;
+
+    const fractionCompleteString = (tasks: Task[]) => tasks.length ? `${tasks.filter(task => task.complete).length} / ${tasks.length}` : '-';
+
+    return <Link className={list.pending ? "pointer-events-none" : ""} href={`/${list.id}`}>
+        <Card key={list.id} className={`py-4 px-6 ${list.pending ? "text-muted-foreground" : ""}`}>
+            <CardContent className="flex justify-between px-0">
+                <div className="overflow-hidden">{list.title}</div>
+                <div className="pl-4">{fractionCompleteString(list.tasks)}</div>
+            </CardContent>
+        </Card>
+    </Link>
 }

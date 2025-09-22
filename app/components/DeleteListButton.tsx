@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { Trash } from "lucide-react";
- import { useRouter } from 'next/navigation';
 import { deleteList } from "../actions";
 import { useState } from "react";
 

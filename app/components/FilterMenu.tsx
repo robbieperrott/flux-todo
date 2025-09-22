@@ -2,6 +2,7 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { Filter } from "../types";
 import { Button } from "@/components/ui/button";
 import { ListFilter } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface FilterMenuProps {
     filter: Filter | null;
@@ -18,7 +19,14 @@ export default function FilterMenu(props: FilterMenuProps) {
     return (
         <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="secondary" size="icon"><ListFilter/></Button>
+        <div className="relative inline-flex">
+            <Button variant="secondary" size="icon">
+                <ListFilter/>
+            </Button>
+            {filter !== null && <Badge
+                className={`absolute -top-1 -right-1 h-3 w-3 p-0 flex items-center justify-center rounded-full text-xs ${filter === "complete" ? "bg-green-300" : filter === "incomplete" ? "bg-orange-300" : ""}`}
+            />}
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Filter By</DropdownMenuLabel>
@@ -26,7 +34,7 @@ export default function FilterMenu(props: FilterMenuProps) {
           checked={filter === null}
           onClick={() => {handleFilterChange(null)}}
         >
-          None
+          No filter
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem
           checked={filter === "complete"}

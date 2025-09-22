@@ -24,7 +24,7 @@ export default function DeleteListButton(props: DeleteListButtonProps) {
 
     return <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="secondary" size="icon"><Trash/></Button>
+                <Button variant="destructive" size="icon"><Trash/></Button>
             </DialogTrigger>
             <DialogContent showCloseButton={false}>
                     <DialogHeader>

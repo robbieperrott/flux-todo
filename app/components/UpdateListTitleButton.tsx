@@ -28,11 +28,11 @@ export default function UpdateListTitle(props: UpdateListTitleButtonProps) {
     useEffect(() => {
         // Revert to initial title when dialog is opened or closed
         setTitle(initialTitle);
-    }, [open])
+    }, [open, initialTitle])
 
     return <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-            <Button variant="secondary" size="icon"><PenLine size={20}/></Button>
+            <Button variant="link" size="icon"><PenLine /></Button>
             </DialogTrigger>
             <DialogContent showCloseButton={false}>
                     <DialogHeader>

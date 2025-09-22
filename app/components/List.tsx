@@ -106,14 +106,20 @@ export default function List(props: ListProps) {
     const sortedTasks = filteredTasks.sort(sortFunction());
 
     return <>
-        <div className="flex justify-between mb-8">
-            <div className="text-xl font-semibold my-auto">
-                {optimisticListTitle}
-            </div>
-            <div className="flex gap-4 items-center">
-                <div className="flex gap-2">
+        <div className="flex flex-col gap-8 mb-4">
+            <div className="flex justify-between">
+                <div className="text-xl font-semibold my-auto text-center">
+                    {optimisticListTitle}
                     <UpdateListTitleButton initialTitle={list.title} onUpdate={handleUpdateListTitle}/>
+                </div>
+                <div className="flex gap-2">
+                    
                     <DeleteListButton listId={list.id}/>
+                </div>
+            </div>
+            <div className="flex items-center justify-between">
+                <NewTaskButton onSubmit={handleCreateTask}/>
+                <div className="flex gap-2">
                     <FilterMenu
                         filter={filter}
                         onChangeFilter={setFilter}
@@ -126,7 +132,6 @@ export default function List(props: ListProps) {
                         textFieldName="Description"
                     />
                 </div>
-                <NewTaskButton onSubmit={handleCreateTask}/>
             </div>
         </div>
         <div className="flex flex-col gap-4">

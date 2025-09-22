@@ -5,7 +5,6 @@ import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogT
 import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import { isMobile } from "../isMobile";
 
 interface NewTaskButtonProps {
     onSubmit: (description: string) => Promise<void>;
@@ -26,7 +25,7 @@ export default function NewTaskButton(props: NewTaskButtonProps) {
 
     return <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button><Plus/>{isMobile() ? "" : "New Task"}</Button>
+                <Button><Plus/>New Task</Button>
             </DialogTrigger>
             <DialogContent showCloseButton={false}>
                     <DialogHeader>

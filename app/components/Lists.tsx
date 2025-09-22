@@ -83,36 +83,36 @@ export default function Lists(props: ListsProps) {
     const sortedLists = filteredLists.sort(sortFunction());
 
     return <>
-        <div className="flex flex-col gap-8">
-            <div className="flex flex-row gap-4">
+        <div className="flex flex-col gap-8 mb-4">
                 <Input
                     type="text"
                     placeholder="Search for lists or tasks"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <div className="flex gap-2">
-                    <FilterMenu
-                        filter={filter}
-                        onChangeFilter={setFilter}
+                <div className="flex justify-between">
+                    <NewListButton
+                        onSubmit={handleSubmitNewList}
                     />
-                    <SortMenu
-                        direction={sortDirection}
-                        onChangeDirection={setSortDirection}
-                        sortBy={sortBy}
-                        onChangeSortBy={setSortBy}
-                        textFieldName="Title"
-                    />
+                    <div className="flex gap-2">
+                        <FilterMenu
+                            filter={filter}
+                            onChangeFilter={setFilter}
+                        />
+                        <SortMenu
+                            direction={sortDirection}
+                            onChangeDirection={setSortDirection}
+                            sortBy={sortBy}
+                            onChangeSortBy={setSortBy}
+                            textFieldName="Title"
+                        />
+                    </div>
                 </div>
-                <NewListButton
-                    onSubmit={handleSubmitNewList}
-                />
             </div>
             <div className="flex flex-col gap-4">
             {sortedLists.map((list) => (
                 <ListCard key={list.id} list={list} searchTerm={searchTerm}/>
             ))}
-            </div>
         </div>
         </>
 }

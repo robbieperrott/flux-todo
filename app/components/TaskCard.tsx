@@ -24,13 +24,15 @@ export default function TaskCard(props: TaskCardProps) {
 
     const handleUpdateDescription = (description: string) => onUpdate({...task, description})
 
-    return <Card className={`py-4 px-6 ${task.pending ? "pointer-events-none text-muted-foreground" : ""}`} onClick={updateTaskComplete}>
+    return <Card className={`bg-foreground hover:bg-secondary-foreground py-4 px-6 text-background ${task.pending ? "pointer-events-none bg-secondary-foreground text-muted-foreground" : ""}`} onClick={updateTaskComplete}>
         <CardContent className="flex px-0 justify-between items-center">
             <div className="flex items-center gap-4 overflow-hidden">
                 <Checkbox
+                    disabled={task.pending}
+                    className="bg-background"
                     checked={task.complete}
                 />
-                {task.description}
+                <div className={task.complete ? "line-through" : ""}>{task.description}</div>
             </div>
             <div className="flex items-center gap-2 pl-4">
                 {!task.complete && <EditTaskDescription initialDescription={task.description} onUpdate={handleUpdateDescription}/>}

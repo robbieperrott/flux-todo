@@ -13,5 +13,5 @@ export default function DeleteTaskButton(props: DeleteTaskButtonProps) {
         onDelete();
     }
 
-    return <Button variant="ghost" onClick={handleDelete}><X size={18} /></Button>
+    return <Button className="text-inherit" variant="link" onClick={handleDelete}><X size={18} /></Button>
 }

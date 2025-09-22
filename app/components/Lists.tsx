@@ -1,35 +1,38 @@
 "use client"
 
-import { useOptimistic, useState, useTransition } from "react";
+import { startTransition, useOptimistic, useState } from "react";
 import { List, Task } from "../generated/prisma/browser";
-import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { createList } from "../actions";
 import { Input } from "@/components/ui/input";
 import NewListButton from "./NewListButton";
 import { SortBy, ListWithTasks, SortDirection, Filter } from "../types";
 import ControlMenu from "./ControlMenu";
+import { useRouter } from "next/navigation";
+
+type ListDisplay = ListWithTasks & {pending?: boolean}
 
 interface ListsProps {
-    lists: ListWithTasks[];
+    lists: ListDisplay[];
     userId: number;
 }
 
 export default function Lists(props: ListsProps) {
     const {lists, userId} = props;
 
-    const [isPending, startTransition] = useTransition();
+    const router = useRouter();
     const [searchTerm, setSearchTerm] = useState("");
     const [sortBy, setSortBy] = useState<SortBy>("createdAt");
     const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
     const [filter, setFilter] = useState<Filter | null>(null);
 
     const [optimisticLists, addOptimisticList] = useOptimistic<
-        ListWithTasks[],
+        ListDisplay[],
         string
     >(
         lists,
         (state, newListTitle) => [...state, {
+            pending: true,   // Mark this as a temporary / optimistically loaded object
             id: Date.now(), // Temporary optimistic ID
             userId,
             title: newListTitle,
@@ -45,7 +48,7 @@ export default function Lists(props: ListsProps) {
 
     const fractionCompleteString = (tasks: Task[]) => tasks.length ? `${tasks.filter(task => task.complete).length} / ${tasks.length}` : '-';
 
-    const listPassesFilter = (list: ListWithTasks) => {
+    const listPassesFilter = (list: ListDisplay) => {
         const allTasksComplete = list.tasks.length && list.tasks.every(task => task.complete);
         if (filter === "complete") {
             return allTasksComplete
@@ -56,11 +59,11 @@ export default function Lists(props: ListsProps) {
         }
     }
 
-    const listPassesSearch = (list: ListWithTasks) => {
+    const listPassesSearch = (list: ListDisplay) => {
         return list.title.toLowerCase().includes(searchTerm.toLowerCase()) || list.tasks.find(task => task.description.toLowerCase().includes(searchTerm.toLowerCase()))
     }
 
-    const listFilter = (list: ListWithTasks) => {
+    const listFilter = (list: ListDisplay) => {
         return listPassesFilter(list) && listPassesSearch(list)
     }
 
@@ -82,6 +85,10 @@ export default function Lists(props: ListsProps) {
 
     const sortedLists = filteredLists.sort(sortFunction());
 
+    const handleListClick = (list: ListDisplay) => {
+        if (!list.pending) router.push(`/${list.id}`);
+    }
+
     return <>
         <div className="flex flex-col gap-8">
             <div className="flex flex-row gap-4">
@@ -101,20 +108,17 @@ export default function Lists(props: ListsProps) {
                     textFieldName="Title"
                 />
                 <NewListButton
-                    isPending={isPending}
                     onSubmit={handleSubmitNewList}
                 />
             </div>
             <div className="flex flex-col gap-4">
             {sortedLists.map((list) => (
-            <Link href={`/${list.id}`} key={list.id}>
-                <Card className="py-4 px-6">
-                <CardContent className="flex justify-between px-0">
-                    <div className="overflow-hidden">{list.title}</div>
-                    <div className="pl-4">{fractionCompleteString(list.tasks)}</div>
-                </CardContent>
+                <Card key={list.id} onClick={() => handleListClick(list)} className="py-4 px-6">
+                    <CardContent className="flex justify-between px-0">
+                        <div className="overflow-hidden">{list.title}</div>
+                        <div className="pl-4">{fractionCompleteString(list.tasks)}</div>
+                    </CardContent>
                 </Card>
-            </Link>
             ))}
             </div>
         </div>

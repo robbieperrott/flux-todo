@@ -19,10 +19,10 @@ export default function UpdateListTitle(props: UpdateListTitleButtonProps) {
     const [open, setOpen] = useState(false);
 
     async function updateListTitle(e: React.FormEvent) {
-            e.preventDefault();
-            setOpen(false);
-            setTitle(initialTitle);
-            onUpdate(title)
+        e.preventDefault();
+        setOpen(false);
+        setTitle(initialTitle);
+        onUpdate(title);
     }
 
     useEffect(() => {

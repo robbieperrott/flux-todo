@@ -5,20 +5,19 @@ import { Plus } from "lucide-react";
 import { useState } from "react";
 
 interface NewListButtonProps {
-    isPending: boolean;
     onSubmit: (newListTitle: string) => Promise<void>;
 }
 
 export default function NewListButton(props: NewListButtonProps) {
-    const {isPending, onSubmit} = props;
+    const {onSubmit} = props;
 
     const [newListTitle, setNewListTitle] = useState("");
     const [open, setOpen] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
         setNewListTitle("");
         setOpen(false);
-        e.preventDefault();
         await onSubmit(newListTitle);
     }
 
@@ -42,7 +41,7 @@ export default function NewListButton(props: NewListButtonProps) {
                                 <DialogClose asChild>
                                     <Button variant="outline">Cancel</Button>
                                 </DialogClose>
-                                <Button type="submit" disabled={isPending || newListTitle === ""}>Create</Button>
+                                <Button type="submit" disabled={newListTitle === ""}>Create</Button>
                             </DialogFooter>
                         </form>
                     </DialogContent>

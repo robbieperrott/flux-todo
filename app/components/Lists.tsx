@@ -6,11 +6,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { createList } from "../actions";
 import { Input } from "@/components/ui/input";
 import NewListButton from "./NewListButton";
-import { SortBy, ListWithTasks, SortDirection, Filter } from "../types";
+import { SortBy, SortDirection, Filter, ListDisplay } from "../types";
 import ControlMenu from "./ControlMenu";
 import Link from "next/link";
-
-type ListDisplay = ListWithTasks & {pending?: boolean}
 
 interface ListsProps {
     lists: ListDisplay[];

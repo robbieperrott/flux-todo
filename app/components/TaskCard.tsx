@@ -6,8 +6,10 @@ import EditTaskDescription from "./EditTaskDescription";
 import { Task } from "../generated/prisma/browser";
 import DeleteTaskButton from "./DeleteTaskButton";
 
+type TaskDisplay = Task & {pending?: boolean};
+
 interface TaskCardProps {
-  task: Task;
+  task: TaskDisplay;
   onDelete: () => Promise<void>
   onUpdate: (task: Task) => Promise<void>;
 }
@@ -22,7 +24,7 @@ export default function TaskCard(props: TaskCardProps) {
 
     const handleUpdateDescription = (description: string) => onUpdate({...task, description})
 
-    return <Card className="py-4 px-6" onClick={updateTaskComplete}>
+    return <Card className={`py-4 px-6 ${task.pending ? "pointer-events-none text-muted-foreground" : ""}`} onClick={updateTaskComplete}>
         <CardContent className="flex px-0 justify-between items-center">
             <div className="flex items-center gap-4 overflow-hidden">
                 <Checkbox

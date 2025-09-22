@@ -1,7 +1,7 @@
 "use client"
 import { startTransition, useOptimistic, useState } from "react";
 import { createTask, deleteTask, updateList, updateTask } from "../actions";
-import { ListWithTasks, SortDirection, SortBy, Filter } from "../types";
+import { ListWithTasks, SortDirection, SortBy, Filter, TaskDisplay } from "../types";
 import DeleteListButton from "./DeleteListButton";
 import NewTaskButton from "./NewTaskButton";
 import TaskCard from "./TaskCard";
@@ -30,7 +30,7 @@ export default function List(props: ListProps) {
     
     const [optimisticTasks, setOptimisticTasks] = useOptimistic(
         list.tasks,
-        (state, { action, task }: { action: string; task: Task }) => {
+        (state, { action, task }: { action: string; task: TaskDisplay }) => {
             switch (action) {
             case "delete":
                 return state.filter(({ id }) => id !== task.id);
@@ -46,6 +46,7 @@ export default function List(props: ListProps) {
         setOptimisticTasks({
             action: "create",
             task: {
+                pending: true,  // Mark as a temporary / optimistically loaded task
                 id: Date.now(), // Temporary optimistic ID,
                 description,
                 createdAt: new Date(),

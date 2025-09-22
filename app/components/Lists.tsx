@@ -108,7 +108,7 @@ export default function Lists(props: ListsProps) {
             </div>
             <div className="flex flex-col gap-4">
             {sortedLists.map((list) => (
-                <ListCard key={list.id} list={list}/>
+                <ListCard key={list.id} list={list} searchTerm={searchTerm}/>
             ))}
             </div>
         </div>
@@ -117,17 +117,30 @@ export default function Lists(props: ListsProps) {
 
 interface ListCardProps {
     list: ListDisplay;
+    searchTerm: string;
 }
 
 function ListCard(props: ListCardProps) {
-    const {list} = props;
+    const {list, searchTerm} = props;
 
     const fractionCompleteString = (tasks: Task[]) => tasks.length ? `${tasks.filter(task => task.complete).length} / ${tasks.length}` : '-';
+
+    const containsTasksString = () => {
+        const tasks = list.tasks.filter(task => task.description.toLowerCase().includes(searchTerm.toLowerCase()));
+        if (tasks.length) {
+            return `(contains ${tasks.length === 1 ? "task" : "tasks"}: ${tasks.map(task => task.description).join(", ")})`
+        } else {
+            return ""
+        }
+    }
 
     return <Link className={list.pending ? "pointer-events-none" : ""} href={`/${list.id}`}>
         <Card key={list.id} className={`py-4 px-6 hover:bg-secondary ${list.pending ? "text-muted-foreground" : ""}`}>
             <CardContent className="flex justify-between px-0">
-                <div className="overflow-hidden">{list.title}</div>
+                <div className="overflow-hidden">
+                    {list.title}
+                    {searchTerm && <small className="text-muted pl-2">{containsTasksString()}</small>}
+                </div>
                 <div className="pl-4">{fractionCompleteString(list.tasks)}</div>
             </CardContent>
         </Card>

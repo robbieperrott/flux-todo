@@ -7,8 +7,9 @@ import { createList } from "../actions";
 import { Input } from "@/components/ui/input";
 import NewListButton from "./NewListButton";
 import { SortBy, SortDirection, Filter, ListDisplay } from "../types";
-import ControlMenu from "./ControlMenu";
+import SortMenu from "./SortMenu";
 import Link from "next/link";
+import FilterMenu from "./FilterMenu";
 
 interface ListsProps {
     lists: ListDisplay[];
@@ -90,13 +91,15 @@ export default function Lists(props: ListsProps) {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <ControlMenu
+                <FilterMenu
+                    filter={filter}
+                    onChangeFilter={setFilter}
+                />
+                <SortMenu
                     direction={sortDirection}
                     onChangeDirection={setSortDirection}
                     sortBy={sortBy}
                     onChangeSortBy={setSortBy}
-                    filter={filter}
-                    onChangeFilter={setFilter}
                     textFieldName="Title"
                 />
                 <NewListButton

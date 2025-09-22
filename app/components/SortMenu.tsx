@@ -7,12 +7,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { SlidersHorizontal } from "lucide-react"
-import { Filter, SortBy, SortDirection } from "../types"
+import { ArrowUpDown } from "lucide-react"
+import { SortBy, SortDirection } from "../types"
 
-interface ControlMenuProps {
-    filter: Filter | null;
-    onChangeFilter: (filter: Filter | null) => void;
+interface SortMenuProps {
     sortBy: SortBy;
     onChangeSortBy: (sortBy: SortBy) => void;
     direction: SortDirection;
@@ -20,17 +18,13 @@ interface ControlMenuProps {
     textFieldName: string;  // E.g. "title" or "description"
 }
 
-export default function ControlMenu(props: ControlMenuProps) {
-  const {direction, filter, onChangeFilter, sortBy, onChangeSortBy, onChangeDirection, textFieldName} = props;
-
-  const handleFilterChange = (newFilter: Filter) => {
-    newFilter === filter ? onChangeFilter(null) : onChangeFilter(newFilter)
-  }
+export default function SortMenu(props: SortMenuProps) {
+  const {direction, sortBy, onChangeSortBy, onChangeDirection, textFieldName} = props;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="secondary" size="icon"><SlidersHorizontal/></Button>
+        <Button variant="secondary" size="icon"><ArrowUpDown/></Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Sort By</DropdownMenuLabel>
@@ -62,20 +56,7 @@ export default function ControlMenu(props: ControlMenuProps) {
           Descending
         </DropdownMenuCheckboxItem>
 
-        <DropdownMenuSeparator />
-        <DropdownMenuLabel>Filter By</DropdownMenuLabel>
-        <DropdownMenuCheckboxItem
-          checked={filter === "complete"}
-          onClick={(e) => {e.preventDefault(); handleFilterChange("complete")}}
-        >
-          Complete
-        </DropdownMenuCheckboxItem>
-        <DropdownMenuCheckboxItem
-          checked={filter === "incomplete"}
-          onClick={(e) => {e.preventDefault(); handleFilterChange("incomplete")}}
-        >
-          Incomplete
-        </DropdownMenuCheckboxItem>
+      
       </DropdownMenuContent>
     </DropdownMenu>
   )

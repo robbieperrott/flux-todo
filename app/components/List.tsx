@@ -7,7 +7,8 @@ import NewTaskButton from "./NewTaskButton";
 import TaskCard from "./TaskCard";
 import UpdateListTitleButton from "./UpdateListTitleButton";
 import { Task } from "../generated/prisma/browser";
-import ControlMenu from "./ControlMenu";
+import SortMenu from "./SortMenu";
+import FilterMenu from "./FilterMenu";
 
 
 interface ListProps {
@@ -110,9 +111,11 @@ export default function List(props: ListProps) {
                 {optimisticListTitle}
             </div>
             <div className="flex gap-2 items-center">
-                <ControlMenu
+                <FilterMenu
                     filter={filter}
                     onChangeFilter={setFilter}
+                />
+                <SortMenu
                     sortBy={sortBy}
                     onChangeSortBy={setSortBy}
                     direction={sortDirection}

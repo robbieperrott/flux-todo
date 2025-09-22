@@ -43,7 +43,7 @@ export default function NewTaskButton(props: NewTaskButtonProps) {
                         <DialogClose asChild>
                             <Button variant="outline">Cancel</Button>
                         </DialogClose>
-                        <Button onClick={handleSubmit}>Create</Button>
+                        <Button disabled={description === ""} onClick={handleSubmit}>Create</Button>
                     </DialogFooter>
             </DialogContent>
         </Dialog>

@@ -46,7 +46,7 @@ export default function EditTaskDescription(props: EditTaskDescriptionProps) {
                             <DialogClose asChild onClick={(e) => e.stopPropagation()}>
                                 <Button variant="outline">Cancel</Button>
                             </DialogClose>
-                            <Button onClick={handleSubmit}>Save</Button>
+                            <Button disabled={description === ""} onClick={handleSubmit}>Save</Button>
                         </DialogFooter>
                 </DialogContent>
             </Dialog>

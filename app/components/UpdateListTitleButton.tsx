@@ -49,7 +49,7 @@ export default function UpdateListTitle(props: UpdateListTitleButtonProps) {
                         <DialogClose asChild>
                             <Button variant="outline">Cancel</Button>
                         </DialogClose>
-                        <Button onClick={updateListTitle}>Save</Button>
+                        <Button disabled={title === ""} onClick={updateListTitle}>Save</Button>
                     </DialogFooter>
             </DialogContent>
         </Dialog>

@@ -91,17 +91,19 @@ export default function Lists(props: ListsProps) {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <FilterMenu
-                    filter={filter}
-                    onChangeFilter={setFilter}
-                />
-                <SortMenu
-                    direction={sortDirection}
-                    onChangeDirection={setSortDirection}
-                    sortBy={sortBy}
-                    onChangeSortBy={setSortBy}
-                    textFieldName="Title"
-                />
+                <div className="flex gap-2">
+                    <FilterMenu
+                        filter={filter}
+                        onChangeFilter={setFilter}
+                    />
+                    <SortMenu
+                        direction={sortDirection}
+                        onChangeDirection={setSortDirection}
+                        sortBy={sortBy}
+                        onChangeSortBy={setSortBy}
+                        textFieldName="Title"
+                    />
+                </div>
                 <NewListButton
                     onSubmit={handleSubmitNewList}
                 />

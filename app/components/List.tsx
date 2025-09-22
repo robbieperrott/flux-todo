@@ -110,20 +110,22 @@ export default function List(props: ListProps) {
             <div className="text-xl font-semibold my-auto">
                 {optimisticListTitle}
             </div>
-            <div className="flex gap-2 items-center">
-                <FilterMenu
-                    filter={filter}
-                    onChangeFilter={setFilter}
-                />
-                <SortMenu
-                    sortBy={sortBy}
-                    onChangeSortBy={setSortBy}
-                    direction={sortDirection}
-                    onChangeDirection={setSortDirection}
-                    textFieldName="Description"
-                />
-                <UpdateListTitleButton initialTitle={list.title} onUpdate={handleUpdateListTitle}/>
-                <DeleteListButton listId={list.id}/>
+            <div className="flex gap-4 items-center">
+                <div className="flex gap-2">
+                    <UpdateListTitleButton initialTitle={list.title} onUpdate={handleUpdateListTitle}/>
+                    <DeleteListButton listId={list.id}/>
+                    <FilterMenu
+                        filter={filter}
+                        onChangeFilter={setFilter}
+                    />
+                    <SortMenu
+                        sortBy={sortBy}
+                        onChangeSortBy={setSortBy}
+                        direction={sortDirection}
+                        onChangeDirection={setSortDirection}
+                        textFieldName="Description"
+                    />
+                </div>
                 <NewTaskButton onSubmit={handleCreateTask}/>
             </div>
         </div>

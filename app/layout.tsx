@@ -40,19 +40,21 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <Navbar />
-          <div className="max-w-2xl mx-auto p-12">
-            <SignedOut>
-              <div className="flex gap-4 justify-center mb-8">
-                <SignInButton>
-                  <Button>Sign In</Button>
-                </SignInButton>
-                <SignUpButton>
-                  <Button variant="outline">Sign Up</Button>
-                </SignUpButton>
-              </div>
-            </SignedOut>
-            {children}
+          <div className="flex flex-col h-screen justify-center">
+            <Navbar />
+            <div className="mx-auto w-full max-w-2xl h-full p-12">
+              <SignedOut>
+                <div className="flex gap-4 justify-center mb-8">
+                  <SignInButton>
+                    <Button>Sign In</Button>
+                  </SignInButton>
+                  <SignUpButton>
+                    <Button variant="outline">Sign Up</Button>
+                  </SignUpButton>
+                </div>
+              </SignedOut>
+              {children}
+            </div>
           </div>
         </body>
       </html>
